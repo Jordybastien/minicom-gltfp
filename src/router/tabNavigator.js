@@ -28,7 +28,7 @@ const RouteConfigs = {
           color={focused ? blue : gray}
         />
       ),
-      title: 'Mortgage',
+      title: 'Complaints',
     },
   },
   SettingsScreen: {

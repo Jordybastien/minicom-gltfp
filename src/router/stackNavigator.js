@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from '../screens/splashScreen';
 import LanguageScreen from '../screens/languageScreen';
+import OnBoardingScreen from '../screens/onBoardingScreen';
 import TabNavigator from './tabNavigator';
 
 const StackNavigatorConfig = {
@@ -23,6 +24,11 @@ const StackConfig = {
     component: LanguageScreen,
     options: { headerShown: false },
   },
+  OnBoardingScreen: {
+    name: 'OnBoardingScreen',
+    component: OnBoardingScreen,
+    options: { headerShown: false },
+  },
 };
 const Stack = createStackNavigator();
 
@@ -32,6 +38,7 @@ const StackNavigator = () => {
       <Stack.Screen {...StackConfig['SplashScreen']} />
       <Stack.Screen {...StackConfig['HomeScreen']} />
       <Stack.Screen {...StackConfig['LanguageScreen']} />
+      <Stack.Screen {...StackConfig['OnBoardingScreen']} />
     </Stack.Navigator>
   );
 };

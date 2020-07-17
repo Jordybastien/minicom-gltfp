@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ImageBackground,
+} from 'react-native';
 import { Spinner } from 'native-base';
 import { useFonts } from '@use-expo/font';
 import { white, blue } from '../utils/colors';
@@ -35,26 +42,36 @@ const SplashScreen = (props) => {
   }, 6000);
 
   return (
-    <View style={styles.container}>
-      <Image source={require('../../assets/emblem.png')} style={styles.logo} />
-      <View>
-        <Text
-          style={[
-            styles.text,
-            {
-              fontSize: 45,
-              fontFamily: isFontLoaded ? 'regular' : null,
-            },
-          ]}
-        >
-          GLTFP
-        </Text>
-      </View>
-      <Image
-        source={require('../../assets/worldgroup.png')}
-        style={styles.bottomLogo}
-      />
-      {showSpinner && <Spinner color={blue} />}
+    <View>
+      <ImageBackground
+        source={require('../../assets/bg_lines.png')}
+        style={{ width, height }}
+      >
+        <View style={styles.container}>
+          <Image
+            source={require('../../assets/emblem.png')}
+            style={styles.logo}
+          />
+          <View>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontSize: 45,
+                  fontFamily: isFontLoaded ? 'regular' : null,
+                },
+              ]}
+            >
+              GLTFP
+            </Text>
+          </View>
+          <Image
+            source={require('../../assets/worldgroup.png')}
+            style={styles.bottomLogo}
+          />
+          {showSpinner && <Spinner color={blue} />}
+        </View>
+      </ImageBackground>
     </View>
   );
 };
