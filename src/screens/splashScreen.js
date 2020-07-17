@@ -3,6 +3,12 @@ import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { Spinner } from 'native-base';
 import { useFonts } from '@use-expo/font';
 import { white, blue } from '../utils/colors';
+import {
+  getLanguage,
+  setLanguage,
+  getOnBoardingStatus,
+  changeOnboardingStatus,
+} from '../utils/storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,13 +22,17 @@ const SplashScreen = (props) => {
     italic: require('../../assets/fonts/Montserrat-Italic.ttf'),
   });
 
+  getLanguage().then((data) => !data && setLanguage('english'));
+
+  getOnBoardingStatus().then((data) => !data && changeOnboardingStatus(false));
+
   setTimeout(() => {
     setShowSpinner(true);
   }, 3000);
 
-  // setTimeout(() => {
-  //   props.navigation.navigate('LoginScreen');
-  // }, 6000);
+  setTimeout(() => {
+    props.navigation.navigate('LanguageScreen');
+  }, 6000);
 
   return (
     <View style={styles.container}>

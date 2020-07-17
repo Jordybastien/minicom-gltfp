@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from '../screens/splashScreen';
+import LanguageScreen from '../screens/languageScreen';
 import TabNavigator from './tabNavigator';
 
 const StackNavigatorConfig = {
@@ -17,6 +18,11 @@ const StackConfig = {
     component: TabNavigator,
     options: { headerShown: false },
   },
+  LanguageScreen: {
+    name: 'LanguageScreen',
+    component: LanguageScreen,
+    options: { headerShown: false },
+  },
 };
 const Stack = createStackNavigator();
 
@@ -25,6 +31,7 @@ const StackNavigator = () => {
     <Stack.Navigator {...StackNavigatorConfig}>
       <Stack.Screen {...StackConfig['SplashScreen']} />
       <Stack.Screen {...StackConfig['HomeScreen']} />
+      <Stack.Screen {...StackConfig['LanguageScreen']} />
     </Stack.Navigator>
   );
 };
