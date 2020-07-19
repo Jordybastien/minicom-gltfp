@@ -38,7 +38,11 @@ const SplashScreen = (props) => {
   }, 3000);
 
   setTimeout(() => {
-    props.navigation.navigate('LanguageScreen');
+    // props.navigation.navigate('LanguageScreen');
+    props.navigation.reset({
+      index: 0,
+      routes: [{ name: 'LanguageScreen' }],
+    });
   }, 6000);
 
   return (

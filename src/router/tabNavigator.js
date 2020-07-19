@@ -14,7 +14,7 @@ const RouteConfigs = {
       tabBarIcon: ({ tintColor, focused }) => (
         <AntDesign name="home" size={30} color={focused ? blue : gray} />
       ),
-      title: 'Properties',
+      title: 'Home',
     },
   },
   ComplaintsScreen: {

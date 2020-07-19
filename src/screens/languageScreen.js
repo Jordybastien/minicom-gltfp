@@ -28,7 +28,11 @@ class LanguageScreen extends Component {
   handleLanguageSubmit = () => {
     const { language } = this.state;
     this.props.dispatch(handleLanguage(language));
-    this.props.navigation.navigate('OnBoardingScreen');
+    // this.props.navigation.navigate('OnBoardingScreen');
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{ name: 'OnBoardingScreen' }],
+    });
   };
 
   render() {

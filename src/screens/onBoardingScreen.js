@@ -15,6 +15,7 @@ import HeaderLogo from '../components/headerLogo';
 import { blue, white, yellow } from '../utils/colors';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Dots from '../components/onBoardingDots';
+import * as Animatable from 'react-native-animatable';
 
 const { width, height } = Dimensions.get('window');
 
@@ -37,9 +38,12 @@ class OnBoardingScreen extends Component {
     if (count < 2) {
       this.setState({ count: count + 1 });
     } else {
-      this.props.navigation.navigate('HomeScreen');
+      // this.props.navigation.navigate('HomeScreen');
+      this.props.navigation.reset({
+        index: 0,
+        routes: [{ name: 'HomeScreen' }],
+      });
       // update to asyncstorage to not show onboarding screens again
-      // push to home screen
     }
   };
 
@@ -71,38 +75,50 @@ class OnBoardingScreen extends Component {
                 </View>
                 <View style={styles.descriptionContainer}>
                   {count === 0 && (
-                    <Text style={styles.description}>
+                    <Animatable.Text
+                      style={styles.description}
+                      animation="fadeInLeft"
+                    >
                       {languages[language].onBoardingScreen.text1}
-                    </Text>
+                    </Animatable.Text>
                   )}
                   {count === 1 && (
-                    <Text style={styles.description}>
+                    <Animatable.Text
+                      style={styles.description}
+                      animation="fadeInLeft"
+                    >
                       {languages[language].onBoardingScreen.text2}
-                    </Text>
+                    </Animatable.Text>
                   )}
                   {count === 2 && (
-                    <Text style={styles.description}>
+                    <Animatable.Text
+                      style={styles.description}
+                      animation="fadeInLeft"
+                    >
                       {languages[language].onBoardingScreen.text3}
-                    </Text>
+                    </Animatable.Text>
                   )}
                 </View>
                 <View>
                   {count === 0 && (
-                    <Image
+                    <Animatable.Image
                       source={require('../../assets/img-1.png')}
                       style={styles.onboardingImage}
+                      animation="fadeInUp"
                     />
                   )}
                   {count === 1 && (
-                    <Image
+                    <Animatable.Image
                       source={require('../../assets/img-2.png')}
                       style={styles.onboardingImage}
+                      animation="fadeInUp"
                     />
                   )}
                   {count === 2 && (
-                    <Image
+                    <Animatable.Image
                       source={require('../../assets/img-3.png')}
                       style={styles.onboardingImage}
+                      animation="fadeInUp"
                     />
                   )}
                 </View>
@@ -156,7 +172,10 @@ class OnBoardingScreen extends Component {
                           onPress={this.handleNext}
                         >
                           <Text style={styles.getStartedLabel}>
-                            Get Started
+                            {
+                              languages[this.state.language].onBoardingScreen
+                                .getStarted
+                            }
                           </Text>
                         </TouchableOpacity>
                       </View>

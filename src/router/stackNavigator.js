@@ -4,6 +4,7 @@ import SplashScreen from '../screens/splashScreen';
 import LanguageScreen from '../screens/languageScreen';
 import OnBoardingScreen from '../screens/onBoardingScreen';
 import TabNavigator from './tabNavigator';
+import { blue, white } from '../utils/colors';
 
 const StackNavigatorConfig = {
   headerMode: 'screen',
@@ -17,7 +18,14 @@ const StackConfig = {
   HomeScreen: {
     name: 'HomeScreen',
     component: TabNavigator,
-    options: { headerShown: false },
+    options: {
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: blue,
+      },
+      headerTintColor: white,
+      title: 'GLTFP',
+    },
   },
   LanguageScreen: {
     name: 'LanguageScreen',
