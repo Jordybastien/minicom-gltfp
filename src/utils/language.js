@@ -1,5 +1,10 @@
 export const languages = Object.freeze({
   english: {
+    tabs: {
+      home: 'Home',
+      complaints: 'Complaints',
+      settings: 'Settings',
+    },
     splashScreen: {
       title: 'Choose Language',
       description:
@@ -14,8 +19,30 @@ export const languages = Object.freeze({
       next: 'Next',
       getStarted: 'Get Started',
     },
+    homeScreen: {
+      button: `Let's Go`,
+    },
+    complaintsScreen: {
+      title: 'Search Complaint',
+      phoneTitle: 'What is your phone number?',
+      phonePlaceholder: 'Phone Number',
+      complaintTitle: 'What is the complaint number?',
+      complaintPlaceholder: 'Complaint Number',
+      buttonLabel: 'Search',
+    },
+    complaintDetailsScreen: {
+      complaintNumber: 'Complaint Number',
+      phoneNumber: 'Phone Number',
+      description: 'Description',
+      status: 'Status',
+    },
   },
   kinyarwanda: {
+    tabs: {
+      home: 'Ahabanza',
+      complaints: 'Ibirego',
+      settings: 'Igenamiterere',
+    },
     splashScreen: {
       title: 'Hitamo Ururimi',
       description: 'Hitamo ururimi wifuza gukoresha.',
@@ -28,6 +55,23 @@ export const languages = Object.freeze({
       previous: 'Inyuma',
       next: 'Imbere',
       getStarted: 'Tangira',
+    },
+    homeScreen: {
+      button: 'Tangira',
+    },
+    complaintsScreen: {
+      title: 'Shakisha Ikirego',
+      phoneTitle: 'Numero ya telephone yawe?',
+      phonePlaceholder: 'Numero ya telephone',
+      complaintTitle: `Numer y'ikirego cyawe?`,
+      complaintPlaceholder: `Numero y'ikirego`,
+      buttonLabel: 'Shakisha',
+    },
+    complaintDetailsScreen: {
+      complaintNumber: `Numero y'ikirego`,
+      phoneNumber: 'Numero ya telephone',
+      description: 'Ibisobanuro',
+      status: 'Imiterere',
     },
   },
 });
