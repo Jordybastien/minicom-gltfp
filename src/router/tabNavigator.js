@@ -5,14 +5,6 @@ import { white, blue, gray } from '../utils/colors';
 import HomeScreen from '../screens/homeScreen';
 import ComplaintsScreen from '../screens/complaintsScreen';
 import SettingsScreen from '../screens/settingsScreen';
-import { languages } from '../utils/language';
-import { getLanguage } from '../utils/storage';
-
-let language = 'english';
-
-getLanguage().then((data) => {
-  data ? (language = data) : (language = 'english');
-});
 
 const RouteConfigs = {
   HomeScreen: {
@@ -22,7 +14,7 @@ const RouteConfigs = {
       tabBarIcon: ({ tintColor, focused }) => (
         <AntDesign name="home" size={30} color={focused ? blue : gray} />
       ),
-      title: languages[language].tabs.home,
+      title: 'Home',
     },
   },
   ComplaintsScreen: {
@@ -36,7 +28,7 @@ const RouteConfigs = {
           color={focused ? blue : gray}
         />
       ),
-      title: languages[language].tabs.complaints,
+      title: 'Complaints',
     },
   },
   SettingsScreen: {
@@ -46,7 +38,7 @@ const RouteConfigs = {
       tabBarIcon: ({ tintColor, focused }) => (
         <Feather name="settings" size={30} color={focused ? blue : gray} />
       ),
-      title: languages[language].tabs.settings,
+      title: 'Settings',
     },
   },
 };

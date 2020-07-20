@@ -23,7 +23,7 @@ export const languages = Object.freeze({
       button: `Let's Go`,
     },
     complaintsScreen: {
-      title: 'Search Complaint',
+      title: 'Follow Complaint',
       phoneTitle: 'What is your phone number?',
       phonePlaceholder: 'Phone Number',
       complaintTitle: 'What is the complaint number?',
@@ -31,10 +31,26 @@ export const languages = Object.freeze({
       buttonLabel: 'Search',
     },
     complaintDetailsScreen: {
+      title: 'Complaint Details',
       complaintNumber: 'Complaint Number',
       phoneNumber: 'Phone Number',
       description: 'Description',
       status: 'Status',
+    },
+    settingsScreen: {
+      language: 'Change Language',
+      aboutUs: 'About Us',
+    },
+    settingsLanguageScreen: {
+      title: 'Choose Language',
+      description:
+        'Select in which language you would like to use the application',
+      buttonLabel: 'Change',
+    },
+    aboutUsScreen: {
+      title: 'About Us',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     },
   },
   kinyarwanda: {
@@ -60,7 +76,7 @@ export const languages = Object.freeze({
       button: 'Tangira',
     },
     complaintsScreen: {
-      title: 'Shakisha Ikirego',
+      title: 'Kurikirana Ikirego',
       phoneTitle: 'Numero ya telephone yawe?',
       phonePlaceholder: 'Numero ya telephone',
       complaintTitle: `Numer y'ikirego cyawe?`,
@@ -68,10 +84,25 @@ export const languages = Object.freeze({
       buttonLabel: 'Shakisha',
     },
     complaintDetailsScreen: {
+      title: 'Ibisobanuro birambuye',
       complaintNumber: `Numero y'ikirego`,
       phoneNumber: 'Numero ya telephone',
       description: 'Ibisobanuro',
       status: 'Imiterere',
+    },
+    settingsScreen: {
+      language: 'Hindura Ururimi',
+      aboutUs: 'Turi bande',
+    },
+    settingsLanguageScreen: {
+      title: 'Hindura Ururimi',
+      description: 'Hitamo ururimi wifuza kujya ukoresha',
+      buttonLabel: 'Hindura',
+    },
+    aboutUsScreen: {
+      title: 'Turi bande',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     },
   },
 });

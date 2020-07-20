@@ -25,7 +25,10 @@ class ComplaintsScreen extends Component {
   }
 
   handleSearch = () => {
-    this.props.navigation.navigate('ComplaintDetailsScreen');
+    const { language } = this.state;
+    this.props.navigation.navigate('ComplaintDetailsScreen', {
+      name: languages[language].complaintDetailsScreen.title,
+    });
   };
 
   render() {

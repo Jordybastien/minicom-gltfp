@@ -4,6 +4,8 @@ import SplashScreen from '../screens/splashScreen';
 import LanguageScreen from '../screens/languageScreen';
 import OnBoardingScreen from '../screens/onBoardingScreen';
 import ComplaintDetailsScreen from '../screens/complaintDetails';
+import SettingsLanguageScreen from '../screens/settingsLanguagesScreen';
+import AboutUsScreen from '../screens/aboutUsScreen';
 import TabNavigator from './tabNavigator';
 import { blue, white } from '../utils/colors';
 
@@ -47,7 +49,31 @@ const StackConfig = {
         backgroundColor: blue,
       },
       headerTintColor: white,
-      title: 'Complaint Details',
+      // title: 'Complaint Details',
+    },
+  },
+  SettingsLanguageScreen: {
+    name: 'SettingsLanguageScreen',
+    component: SettingsLanguageScreen,
+    options: {
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: blue,
+      },
+      headerTintColor: white,
+      // title: 'Change Language',
+    },
+  },
+  AboutUsScreen: {
+    name: 'AboutUsScreen',
+    component: AboutUsScreen,
+    options: {
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: blue,
+      },
+      headerTintColor: white,
+      // title: 'About Us',
     },
   },
 };
@@ -60,7 +86,36 @@ const StackNavigator = () => {
       <Stack.Screen {...StackConfig['HomeScreen']} />
       <Stack.Screen {...StackConfig['LanguageScreen']} />
       <Stack.Screen {...StackConfig['OnBoardingScreen']} />
-      <Stack.Screen {...StackConfig['ComplaintDetailsScreen']} />
+      <Stack.Screen
+        {...StackConfig['ComplaintDetailsScreen']}
+        options={({ route }) => ({
+          title: route.params.name,
+          headerStyle: {
+            backgroundColor: blue,
+          },
+          headerTintColor: white,
+        })}
+      />
+      <Stack.Screen
+        {...StackConfig['SettingsLanguageScreen']}
+        options={({ route }) => ({
+          title: route.params.name,
+          headerStyle: {
+            backgroundColor: blue,
+          },
+          headerTintColor: white,
+        })}
+      />
+      <Stack.Screen
+        {...StackConfig['AboutUsScreen']}
+        options={({ route }) => ({
+          title: route.params.name,
+          headerStyle: {
+            backgroundColor: blue,
+          },
+          headerTintColor: white,
+        })}
+      />
     </Stack.Navigator>
   );
 };

@@ -43,6 +43,7 @@ const SplashScreen = (props) => {
       index: 0,
       routes: [{ name: 'LanguageScreen' }],
     });
+    // TODO: Check if onboarding was done and go to Home Screen
   }, 6000);
 
   return (
