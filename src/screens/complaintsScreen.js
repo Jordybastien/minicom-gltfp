@@ -18,6 +18,7 @@ class ComplaintsScreen extends Component {
   state = {
     phoneNumber: '',
     language: 'english',
+    complaintNo: '',
   };
 
   componentDidMount() {
@@ -32,7 +33,7 @@ class ComplaintsScreen extends Component {
   };
 
   render() {
-    const { phoneNumber, language } = this.state;
+    const { phoneNumber, language, complaintNo } = this.state;
     return (
       <View style={styles.mainContainer}>
         <ImageBackground
@@ -57,7 +58,7 @@ class ComplaintsScreen extends Component {
                   placeholder={
                     languages[language].complaintsScreen.phonePlaceholder
                   }
-                  onChangeText={(lastName) => this.setState({ lastName })}
+                  onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                   value={phoneNumber}
                 />
               </View>
@@ -74,7 +75,7 @@ class ComplaintsScreen extends Component {
                   placeholder={
                     languages[language].complaintsScreen.complaintPlaceholder
                   }
-                  onChangeText={(lastName) => this.setState({ lastName })}
+                  onChangeText={(complaintNo) => this.setState({ complaintNo })}
                   value={phoneNumber}
                 />
               </View>

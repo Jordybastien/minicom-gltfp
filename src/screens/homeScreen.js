@@ -14,7 +14,7 @@ import { languages } from '../utils/language';
 
 const { width, height } = Dimensions.get('window');
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
   const [language, setLanguage] = useState('english');
 
   useEffect(() => {
@@ -37,7 +37,11 @@ const HomeScreen = () => {
           <View style={styles.btnContainer}>
             <TouchableOpacity
               style={styles.btn}
-              onPress={() => console.log('===>clicked')}
+              onPress={() =>
+                props.navigation.navigate('NewComplaintScreen', {
+                  name: languages[language].newComplaintScreen.title,
+                })
+              }
             >
               <Text style={styles.btnLabel}>
                 {languages[language].homeScreen.button}
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: blue,
     borderRadius: 30,
-    width: 180,
+    width: 220,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,

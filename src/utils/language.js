@@ -20,7 +20,7 @@ export const languages = Object.freeze({
       getStarted: 'Get Started',
     },
     homeScreen: {
-      button: `Let's Go`,
+      button: 'Complain Now',
     },
     complaintsScreen: {
       title: 'Follow Complaint',
@@ -51,6 +51,27 @@ export const languages = Object.freeze({
       title: 'About Us',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    },
+    newComplaintScreen: {
+      title: 'New Complaint',
+      phoneLabel: 'What is your Phone Number?',
+      phonePlaceholder: 'Phone Number',
+      genderLabel: 'How about your gender?',
+      male: 'Male',
+      female: 'Female',
+      categoryLabel: 'What is the complaint category?',
+      selectLabel: 'Select Category',
+      searchLabel: 'Search Category',
+      messageLabel: 'What happened?',
+      messagePlaceholder: 'Message',
+      notificationLabel: 'How would you like to be notified?',
+      emailLabel: 'What is your email?',
+      emailPlaceholder: 'Email',
+      button: 'Send',
+    },
+    successScreen: {
+      text: `We've successfully received your complaint. We will get back to you shortly.`,
+      button: 'Back Home',
     },
   },
   kinyarwanda: {
@@ -103,6 +124,27 @@ export const languages = Object.freeze({
       title: 'Turi bande',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    },
+    newComplaintScreen: {
+      title: 'Ikirego Gishya',
+      phoneLabel: 'Numero ya telephone',
+      phonePlaceholder: 'Numero ya telephone',
+      genderLabel: 'Igitsina',
+      male: 'Gabo',
+      female: 'Gore',
+      categoryLabel: `Icyiciro cy' Ikirego`,
+      selectLabel: 'Hitamo Icyiciro',
+      searchLabel: 'Hitamo Icyiciro',
+      messageLabel: 'Ikirego',
+      messagePlaceholder: 'ikirego',
+      notificationLabel: 'Murifuza kumenyeshwa gute?',
+      emailLabel: 'Email',
+      emailPlaceholder: 'Email',
+      button: 'Ohereze',
+    },
+    successScreen: {
+      text: 'Murakoze, Twakiriye ikirego cyanyu neza.',
+      button: 'Subira Ahabanza',
     },
   },
 });
