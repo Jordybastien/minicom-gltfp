@@ -1,14 +1,15 @@
-import { CHANGE_LANGUAGE } from '../actions/actionTypes';
+import { FETCH_CATEGORIES } from '../actions/actionTypes';
 
-const language = (state = null, action) => {
+const categories = (state = {}, action) => {
   switch (action.type) {
-    case CHANGE_LANGUAGE:
+    case FETCH_CATEGORIES:
       return {
-        ...action.language,
+        ...state,
+        ...action.categories,
       };
     default:
       return state;
   }
 };
 
-export default language;
+export default categories;
