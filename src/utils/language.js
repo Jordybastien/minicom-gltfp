@@ -82,6 +82,8 @@ export const languages = Object.freeze({
       notification: 'Select at least one way to get notified',
       email: 'Email is required',
       wrongEmail: 'Email is invalid',
+      complaintNo: 'Complaint Number is required',
+      notFound: 'Sorry ,your record can not be found in database',
     },
   },
   kinyarwanda: {
@@ -165,6 +167,8 @@ export const languages = Object.freeze({
       notification: 'Hitamo uburyo nibura bumwe mwifuza kumenyeshwamo',
       email: 'Email yanyu irakenewe',
       wrongEmail: 'email ntiyemewe',
+      complaintNo: 'Nimero y ikirego irakenewe',
+      notFound: 'Ihangane, Ikirego cyawe ntikibashije kuboneka',
     },
   },
 });

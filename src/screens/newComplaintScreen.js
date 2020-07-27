@@ -139,7 +139,7 @@ class NewComplaintScreen extends Component {
     if (!phoneNumber) {
       response = false;
       errorMessage = languages[language].errorMessage.phoneNumber;
-    } else if (phoneNumber < 10 && phoneNumber > 10) {
+    } else if (phoneNumber.length < 10 || phoneNumber.length > 10) {
       response = false;
       errorMessage = languages[language].errorMessage.wrongPhoneNumber;
     }

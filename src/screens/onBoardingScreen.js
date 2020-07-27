@@ -38,12 +38,11 @@ class OnBoardingScreen extends Component {
     if (count < 2) {
       this.setState({ count: count + 1 });
     } else {
-      // this.props.navigation.navigate('HomeScreen');
       this.props.navigation.reset({
         index: 0,
         routes: [{ name: 'HomeScreen' }],
       });
-      // update to asyncstorage to not show onboarding screens again
+      // TODO: update to asyncstorage to not show onboarding screens again
     }
   };
 

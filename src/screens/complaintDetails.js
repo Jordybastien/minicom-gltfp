@@ -12,63 +12,71 @@ import { blue, gray } from '../utils/colors';
 
 const { width, height } = Dimensions.get('window');
 
-const ComplaintDetails = () => {
+const ComplaintDetails = (props) => {
   const [language, setLanguage] = useState('english');
 
   useEffect(() => {
     getLanguage().then((data) => data && setLanguage(data));
   });
-
+  const { data } = props.route.params;
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
         source={require('../../assets/bg_lines.png')}
         style={{ width, height }}
       >
-        <View style={styles.container}>
-          <View style={styles.detailContainer}>
-            <View style={styles.detailTitleContainer}>
-              <Text style={styles.detailTitleLabel}>
-                {languages[language].complaintDetailsScreen.complaintNumber}
-              </Text>
+        {data && (
+          <View style={styles.container}>
+            <View style={styles.detailContainer}>
+              <View style={styles.detailTitleContainer}>
+                <Text style={styles.detailTitleLabel}>
+                  {languages[language].complaintDetailsScreen.complaintNumber}
+                </Text>
+              </View>
+              <View style={styles.detailDescription}>
+                <Text style={styles.detailDescriptionLabel}>
+                  {data.complaint_code}
+                </Text>
+              </View>
             </View>
-            <View style={styles.detailDescription}>
-              <Text style={styles.detailDescriptionLabel}>0000000</Text>
+            <View style={styles.detailContainer}>
+              <View style={styles.detailTitle}>
+                <Text style={styles.detailTitleLabel}>
+                  {languages[language].complaintDetailsScreen.phoneNumber}
+                </Text>
+              </View>
+              <View style={styles.detailDescription}>
+                <Text style={styles.detailDescriptionLabel}>
+                  {data.phone_number}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.detailContainer}>
+              <View style={styles.detailTitle}>
+                <Text style={styles.detailTitleLabel}>
+                  {languages[language].complaintDetailsScreen.complaintNumber}
+                </Text>
+              </View>
+              <View style={styles.detailDescription}>
+                <Text style={styles.detailDescriptionLabel}>
+                  {data.message}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.detailContainer}>
+              <View style={styles.detailTitle}>
+                <Text style={styles.detailTitleLabel}>
+                  {languages[language].complaintDetailsScreen.status}
+                </Text>
+              </View>
+              <View style={styles.detailDescription}>
+                <Text style={styles.detailDescriptionLabel}>
+                  {data.complain_status}
+                </Text>
+              </View>
             </View>
           </View>
-          <View style={styles.detailContainer}>
-            <View style={styles.detailTitle}>
-              <Text style={styles.detailTitleLabel}>
-                {languages[language].complaintDetailsScreen.phoneNumber}
-              </Text>
-            </View>
-            <View style={styles.detailDescription}>
-              <Text style={styles.detailDescriptionLabel}>0000000</Text>
-            </View>
-          </View>
-          <View style={styles.detailContainer}>
-            <View style={styles.detailTitle}>
-              <Text style={styles.detailTitleLabel}>
-                {languages[language].complaintDetailsScreen.complaintNumber}
-              </Text>
-            </View>
-            <View style={styles.detailDescription}>
-              <Text style={styles.detailDescriptionLabel}>
-                Lorem Ipsum dolor sit amet.
-              </Text>
-            </View>
-          </View>
-          <View style={styles.detailContainer}>
-            <View style={styles.detailTitle}>
-              <Text style={styles.detailTitleLabel}>
-                {languages[language].complaintDetailsScreen.status}
-              </Text>
-            </View>
-            <View style={styles.detailDescription}>
-              <Text style={styles.detailDescriptionLabel}>Pending</Text>
-            </View>
-          </View>
-        </View>
+        )}
       </ImageBackground>
     </View>
   );
