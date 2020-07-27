@@ -162,12 +162,10 @@ class NewComplaintScreen extends Component {
         type: [DocumentPicker.types.allFiles],
       });
       for (const res of results) {
-        console.log(
-          res.uri,
-          res.type, // mime type
-          res.name,
-          res.size
-        );
+        console.log('==========>uri', res.uri);
+        console.log('==========>type', res.type);
+        console.log('==========>name', res.name);
+        console.log('==========>size', res.size);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -428,22 +426,27 @@ class NewComplaintScreen extends Component {
                         </View>
                       </View>
                     )}
-                    {/* <View style={styles.txtBoxContainer}>
-                    <View style={styles.txtBoxLabelContainer}>
-                      <Text style={styles.txtBoxLabel}>
-                        Do you want to upload supporting documents?
-                      </Text>
-                      <Text style={styles.optional}>Optional</Text>
+                    <View style={styles.txtBoxContainer}>
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          Do you want to upload supporting documents?
+                        </Text>
+                        <Text style={styles.optional}>Optional</Text>
+                        <View style={{ paddingTop: 10 }}>
+                          <Text style={[styles.optional, { color: gray }]}>
+                            3 files
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={styles.uploadContainer}>
+                        <TouchableOpacity
+                          style={styles.btn}
+                          onPress={this.handleUpload}
+                        >
+                          <Text style={styles.btnLabel}>Upload</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
-                    <View style={styles.uploadContainer}>
-                      <TouchableOpacity
-                        style={styles.btn}
-                        onPress={this.handleUpload}
-                      >
-                        <Text style={styles.btnLabel}>Upload</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View> */}
                     <View
                       style={Platform.OS === 'android' && styles.androidResp}
                     >

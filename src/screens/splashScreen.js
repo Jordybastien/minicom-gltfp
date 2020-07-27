@@ -21,6 +21,7 @@ const { width, height } = Dimensions.get('window');
 
 const SplashScreen = (props) => {
   const [showSpinner, setShowSpinner] = useState(false);
+  const [isOnboarded, setIsShowOnboarded] = useState(false);
 
   const [isFontLoaded] = useFonts({
     regular: require('../../assets/fonts/Montserrat-Regular.ttf'),
@@ -31,19 +32,24 @@ const SplashScreen = (props) => {
 
   getLanguage().then((data) => !data && setLanguage('english'));
 
-  getOnBoardingStatus().then((data) => !data && changeOnboardingStatus(false));
+  getOnBoardingStatus().then((data) => {
+    !data && changeOnboardingStatus(false);
+    setIsShowOnboarded(data);
+  });
 
   setTimeout(() => {
     setShowSpinner(true);
   }, 3000);
 
   setTimeout(() => {
-    props.navigation.reset({
-      index: 0,
-      routes: [{ name: 'LanguageScreen' }],
+    getOnBoardingStatus().then((data) => {
+      if (data) {
+        props.navigation.navigate('HomeScreen');
+      } else {
+        props.navigation.navigate('LanguageScreen');
+      }
     });
-    // TODO: Check if onboarding was done and go to Home Screen
-  }, 6000);
+  }, 8000);
 
   return (
     <View>

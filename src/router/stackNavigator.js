@@ -30,6 +30,7 @@ const StackConfig = {
       },
       headerTintColor: white,
       title: 'GLTFP',
+      headerLeft: null,
     },
   },
   LanguageScreen: {

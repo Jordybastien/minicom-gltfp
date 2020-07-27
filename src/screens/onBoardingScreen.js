@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { getLanguage } from '../utils/storage';
+import { getLanguage, changeOnboardingStatus } from '../utils/storage';
 import { languages } from '../utils/language';
 import HeaderLogo from '../components/headerLogo';
 import { blue, white, yellow } from '../utils/colors';
@@ -38,11 +38,11 @@ class OnBoardingScreen extends Component {
     if (count < 2) {
       this.setState({ count: count + 1 });
     } else {
+      changeOnboardingStatus(true);
       this.props.navigation.reset({
         index: 0,
         routes: [{ name: 'HomeScreen' }],
       });
-      // TODO: update to asyncstorage to not show onboarding screens again
     }
   };
 
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     width,
     height,
     paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 50,
   },
   onboardingImage: {
     width: 350,
