@@ -5,8 +5,12 @@
     "name": "gltfp",
     "slug": "gltfp",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "orientation": "portrait",
+    "ios": {
+      "bundleIdentifier": "org.gltfp.exp"
+    },
+    "android": {
+      "package": "org.gltfp.exp"
+    }
   }
 }

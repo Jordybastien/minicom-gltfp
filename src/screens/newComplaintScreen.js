@@ -22,6 +22,9 @@ import DocumentPicker from 'react-native-document-picker';
 import { connect } from 'react-redux';
 import { fetchCategories } from '../services/categories';
 import { Picker, Item } from 'native-base';
+import Toast from 'react-native-simple-toast';
+import { sendComplaint } from '../services/complaint';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const { width, height } = Dimensions.get('window');
 
@@ -52,6 +55,11 @@ class NewComplaintScreen extends Component {
     emailAddress: '',
     language: 'english',
     usedCategories: null,
+    selCategory: '',
+    message: '',
+    emailAddress: '',
+    loading: false,
+    spinner: false,
   };
 
   componentDidMount() {
@@ -67,7 +75,84 @@ class NewComplaintScreen extends Component {
   }
 
   handleSubmit = () => {
-    this.props.navigation.navigate('SuccessScreen');
+    const { response, data } = this.validateData();
+    if (response) {
+      this.setState({ spinner: true });
+      sendComplaint(data).then((res) => {
+        if (res.response_status) {
+          this.setState({ spinner: false });
+          this.props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'SuccessScreen' }],
+          });
+        }
+      });
+    }
+  };
+
+  validateData = () => {
+    const {
+      phoneNumber,
+      gender,
+      selCategory,
+      emailAddress,
+      sms,
+      email,
+      language,
+      message,
+    } = this.state;
+
+    let response = true;
+    let errorMessage = '';
+
+    if (!sms && !email) {
+      response = false;
+      errorMessage = languages[language].errorMessage.notification;
+    }
+
+    if (email && !emailAddress) {
+      response = false;
+      errorMessage = languages[language].errorMessage.email;
+    } else if (
+      email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(emailAddress)
+    ) {
+      response = false;
+      errorMessage = languages[language].errorMessage.wrongEmail;
+    }
+
+    if (!message) {
+      response = false;
+      errorMessage = languages[language].errorMessage.message;
+    }
+
+    if (!selCategory) {
+      response = false;
+      errorMessage = languages[language].errorMessage.category;
+    }
+
+    if (!gender) {
+      response = false;
+      errorMessage = languages[language].errorMessage.gender;
+    }
+
+    if (!phoneNumber) {
+      response = false;
+      errorMessage = languages[language].errorMessage.phoneNumber;
+    } else if (phoneNumber < 10 && phoneNumber > 10) {
+      response = false;
+      errorMessage = languages[language].errorMessage.wrongPhoneNumber;
+    }
+
+    const data = { gender, message };
+    data.phone_number = phoneNumber;
+    data.gender;
+    data.complain_id = selCategory;
+    data.notified_by_phone = phoneNumber;
+    data.notified_by_email = emailAddress;
+
+    errorMessage && Toast.show(errorMessage, Toast.LONG);
+    return { response, data };
   };
 
   handleUpload = async () => {
@@ -93,9 +178,7 @@ class NewComplaintScreen extends Component {
     }
   };
 
-  handleCategory = (data) => {
-    console.log('======>data', data);
-  };
+  handleCategory = (data) => this.setState({ selCategory: data });
 
   render() {
     const {
@@ -107,10 +190,14 @@ class NewComplaintScreen extends Component {
       language,
       usedCategories,
       gender,
+      selCategory,
+      message,
+      loading,
+      spinner,
     } = this.state;
     genders[0].label = languages[language].newComplaintScreen.male;
     genders[1].label = languages[language].newComplaintScreen.female;
-    console.log('==========>categories', usedCategories);
+
     return (
       <ScrollView
         style={styles.scrollView}
@@ -124,30 +211,39 @@ class NewComplaintScreen extends Component {
               height: Platform.OS === 'ios' ? height + 250 : height + 280,
             }}
           >
-            <View style={styles.container}>
-              {usedCategories ? (
-                <>
-                  <View style={styles.txtBoxContainer}>
-                    <View style={styles.txtBoxLabelContainer}>
-                      <Text style={styles.txtBoxLabel}>
-                        {languages[language].newComplaintScreen.phoneLabel}
-                      </Text>
+            {spinner ? (
+              <View style={styles.container}>
+                <Spinner
+                  visible={this.state.spinner}
+                  textContent={'Sending...'}
+                  textStyle={styles.spinnerTextStyle}
+                />
+              </View>
+            ) : (
+              <View style={styles.container}>
+                {usedCategories ? (
+                  <>
+                    <View style={styles.txtBoxContainer}>
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {languages[language].newComplaintScreen.phoneLabel}
+                        </Text>
+                      </View>
+                      <View style={styles.txtBoxInputContainer}>
+                        <TextInput
+                          style={styles.txtBoxInput}
+                          placeholder={
+                            languages[language].newComplaintScreen
+                              .phonePlaceholder
+                          }
+                          onChangeText={(phoneNumber) =>
+                            this.setState({ phoneNumber })
+                          }
+                          value={phoneNumber}
+                        />
+                      </View>
                     </View>
-                    <View style={styles.txtBoxInputContainer}>
-                      <TextInput
-                        style={styles.txtBoxInput}
-                        placeholder={
-                          languages[language].newComplaintScreen
-                            .phonePlaceholder
-                        }
-                        onChangeText={(phoneNumber) =>
-                          this.setState({ phoneNumber })
-                        }
-                        value={phoneNumber}
-                      />
-                    </View>
-                  </View>
-                  {/* <View style={styles.txtBoxContainer}>
+                    {/* <View style={styles.txtBoxContainer}>
                 <View style={styles.txtBoxLabelContainer}>
                   <Text style={styles.txtBoxLabel}>
                     {languages[language].newComplaintScreen.genderLabel}
@@ -161,47 +257,49 @@ class NewComplaintScreen extends Component {
                   style={styles.radionBtn}
                 />
               </View> */}
-                  <View style={[styles.txtBoxContainer, { marginBottom: 0 }]}>
-                    <View style={styles.txtBoxLabelContainer}>
-                      <Text style={styles.txtBoxLabel}>
-                        {
-                          languages[language].newComplaintScreen
-                            .notificationLabel
-                        }
-                      </Text>
+                    <View style={[styles.txtBoxContainer, { marginBottom: 0 }]}>
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {
+                            languages[language].newComplaintScreen
+                              .notificationLabel
+                          }
+                        </Text>
+                      </View>
+                      <View
+                        style={[
+                          styles.notificationsContainer,
+                          Platform.OS === 'android' && {
+                            flex: 1,
+                            marginBottom: 40,
+                          },
+                        ]}
+                      >
+                        <CheckBox
+                          title={languages[language].newComplaintScreen.male}
+                          checked={gender === 'male'}
+                          onPress={() => this.setState({ gender: 'male' })}
+                          containerStyle={styles.singleCheck}
+                        />
+
+                        <CheckBox
+                          title={languages[language].newComplaintScreen.female}
+                          checked={gender === 'female'}
+                          onPress={() => this.setState({ gender: 'female' })}
+                          containerStyle={styles.singleCheck}
+                        />
+                      </View>
                     </View>
                     <View
-                      style={[
-                        styles.notificationsContainer,
-                        Platform.OS === 'android' && {
-                          flex: 1,
-                          marginBottom: 40,
-                        },
-                      ]}
+                      style={[styles.txtBoxContainer, { marginBottom: 75 }]}
                     >
-                      <CheckBox
-                        title={languages[language].newComplaintScreen.male}
-                        checked={gender === 'male'}
-                        onPress={() => this.setState({ gender: 'male' })}
-                        containerStyle={styles.singleCheck}
-                      />
-
-                      <CheckBox
-                        title={languages[language].newComplaintScreen.female}
-                        checked={gender === 'female'}
-                        onPress={() => this.setState({ gender: 'female' })}
-                        containerStyle={styles.singleCheck}
-                      />
-                    </View>
-                  </View>
-                  <View style={[styles.txtBoxContainer, { marginBottom: 75 }]}>
-                    <View style={styles.txtBoxLabelContainer}>
-                      <Text style={styles.txtBoxLabel}>
-                        {languages[language].newComplaintScreen.categoryLabel}
-                      </Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                      {/* <DropDownPicker
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {languages[language].newComplaintScreen.categoryLabel}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        {/* <DropDownPicker
                     items={usedCategories}
                     defaultValue={category}
                     containerStyle={{ height: 50 }}
@@ -223,117 +321,120 @@ class NewComplaintScreen extends Component {
                       languages[language].newComplaintScreen.searchLabel
                     }
                   /> */}
-                      <Item picker style={[styles.txtBox]}>
-                        <Picker
-                          mode="dropdown"
-                          style={{ width: 100, color: '#C7C7CD' }}
-                          onValueChange={(value) => this.handleCategory(value)}
-                          placeholder={languages[language].newComplaintScreen.selectLabel}
-                          style={{ width: undefined }}
-                        >
-                          <Picker.Item
-                            label={
+                        <Item picker style={[styles.txtBox]}>
+                          <Picker
+                            mode="dropdown"
+                            style={{ width: 100, color: '#C7C7CD' }}
+                            onValueChange={(value) =>
+                              this.handleCategory(value)
+                            }
+                            placeholder={
                               languages[language].newComplaintScreen.selectLabel
                             }
-                            value={null}
-                          />
-                          {usedCategories &&
-                            usedCategories.map(({ value, label }, index) => (
-                              <Picker.Item
-                                key={index}
-                                label={label}
-                                value={value}
-                              />
-                            ))}
-                        </Picker>
-                      </Item>
+                            style={{ width: undefined }}
+                            selectedValue={selCategory}
+                          >
+                            <Picker.Item
+                              label={
+                                languages[language].newComplaintScreen
+                                  .selectLabel
+                              }
+                              value={null}
+                            />
+                            {usedCategories &&
+                              usedCategories.map(({ value, label }, index) => (
+                                <Picker.Item
+                                  key={index}
+                                  label={label}
+                                  value={value}
+                                />
+                              ))}
+                          </Picker>
+                        </Item>
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.txtBoxContainer}>
-                    <View style={styles.txtBoxLabelContainer}>
-                      <Text style={styles.txtBoxLabel}>
-                        {languages[language].newComplaintScreen.messageLabel}
-                      </Text>
-                    </View>
-                    <View style={styles.txtBoxInputContainer}>
-                      <TextInput
-                        style={[styles.txtBoxInput, { height: 80 }]}
-                        placeholder={
-                          languages[language].newComplaintScreen
-                            .messagePlaceholder
-                        }
-                        onChangeText={(phoneNumber) =>
-                          this.setState({ phoneNumber })
-                        }
-                        value={phoneNumber}
-                        multiline={true}
-                        numberOfLines={4}
-                      />
-                    </View>
-                  </View>
-                  <View style={[styles.txtBoxContainer, { marginBottom: 0 }]}>
-                    <View style={styles.txtBoxLabelContainer}>
-                      <Text style={styles.txtBoxLabel}>
-                        {
-                          languages[language].newComplaintScreen
-                            .notificationLabel
-                        }
-                      </Text>
-                    </View>
-                    <View
-                      style={[
-                        styles.notificationsContainer,
-                        Platform.OS === 'android' && {
-                          flex: 1,
-                          marginBottom: 40,
-                        },
-                      ]}
-                    >
-                      <CheckBox
-                        title="SMS"
-                        checked={sms}
-                        onPress={() => this.setState({ sms: !sms })}
-                        containerStyle={styles.singleCheck}
-                      />
-
-                      <CheckBox
-                        title="Email"
-                        checked={email}
-                        onPress={() => {
-                          this.setState({ email: !email });
-                          !email && this.scrollView.scrollToEnd();
-                        }}
-                        containerStyle={styles.singleCheck}
-                      />
-                    </View>
-                  </View>
-                  {email && (
                     <View style={styles.txtBoxContainer}>
                       <View style={styles.txtBoxLabelContainer}>
                         <Text style={styles.txtBoxLabel}>
-                          What is your email?
+                          {languages[language].newComplaintScreen.messageLabel}
                         </Text>
                       </View>
                       <View style={styles.txtBoxInputContainer}>
                         <TextInput
-                          style={styles.txtBoxInput}
-                          placeholder="Email"
-                          onChangeText={(emailAddress) =>
-                            this.setState({ emailAddress })
+                          style={[styles.txtBoxInput, { height: 80 }]}
+                          placeholder={
+                            languages[language].newComplaintScreen
+                              .messagePlaceholder
                           }
-                          value={emailAddress}
+                          onChangeText={(message) => this.setState({ message })}
+                          value={message}
+                          multiline={true}
+                          numberOfLines={4}
                         />
                       </View>
                     </View>
-                  )}
-                  <View style={styles.txtBoxContainer}>
+                    <View style={[styles.txtBoxContainer, { marginBottom: 0 }]}>
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {
+                            languages[language].newComplaintScreen
+                              .notificationLabel
+                          }
+                        </Text>
+                      </View>
+                      <View
+                        style={[
+                          styles.notificationsContainer,
+                          Platform.OS === 'android' && {
+                            flex: 1,
+                            marginBottom: 40,
+                          },
+                        ]}
+                      >
+                        <CheckBox
+                          title="SMS"
+                          checked={sms}
+                          onPress={() => this.setState({ sms: !sms })}
+                          containerStyle={styles.singleCheck}
+                        />
+
+                        <CheckBox
+                          title="Email"
+                          checked={email}
+                          onPress={() => {
+                            this.setState({ email: !email });
+                            !email && this.scrollView.scrollToEnd();
+                          }}
+                          containerStyle={styles.singleCheck}
+                        />
+                      </View>
+                    </View>
+                    {email && (
+                      <View style={styles.txtBoxContainer}>
+                        <View style={styles.txtBoxLabelContainer}>
+                          <Text style={styles.txtBoxLabel}>
+                            What is your email?
+                          </Text>
+                        </View>
+                        <View style={styles.txtBoxInputContainer}>
+                          <TextInput
+                            style={styles.txtBoxInput}
+                            placeholder="Email"
+                            onChangeText={(emailAddress) =>
+                              this.setState({ emailAddress })
+                            }
+                            value={emailAddress}
+                          />
+                        </View>
+                      </View>
+                    )}
+                    {/* <View style={styles.txtBoxContainer}>
                     <View style={styles.txtBoxLabelContainer}>
                       <Text style={styles.txtBoxLabel}>
                         Do you want to upload supporting documents?
                       </Text>
                       <Text style={styles.optional}>Optional</Text>
                     </View>
-                    {/* Button here */}
                     <View style={styles.uploadContainer}>
                       <TouchableOpacity
                         style={styles.btn}
@@ -342,20 +443,23 @@ class NewComplaintScreen extends Component {
                         <Text style={styles.btnLabel}>Upload</Text>
                       </TouchableOpacity>
                     </View>
+                  </View> */}
+                    <View
+                      style={Platform.OS === 'android' && styles.androidResp}
+                    >
+                      <Button
+                        label={languages[language].newComplaintScreen.button}
+                        handleClick={this.handleSubmit}
+                      />
+                    </View>
+                  </>
+                ) : (
+                  <View style={styles.indicator}>
+                    <ActivityIndicator size="small" color={blue} />
                   </View>
-                  <View style={Platform.OS === 'android' && styles.androidResp}>
-                    <Button
-                      label={languages[language].newComplaintScreen.button}
-                      handleClick={this.handleSubmit}
-                    />
-                  </View>
-                </>
-              ) : (
-                <View>
-                  <ActivityIndicator size="small" color={blue} />
-                </View>
-              )}
-            </View>
+                )}
+              </View>
+            )}
           </ImageBackground>
         </View>
       </ScrollView>
@@ -372,6 +476,12 @@ const mapStateToProps = (categories) => {
 export default connect(mapStateToProps)(NewComplaintScreen);
 
 const styles = StyleSheet.create({
+  spinnerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
   mainContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -471,5 +581,44 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 20,
     paddingLeft: 10,
+  },
+  indicator: {
+    flex: 1,
+    marginTop: 200,
+    alignItems: 'center',
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnLoading: {
+    backgroundColor: yellow,
+    borderRadius: 30,
+    width: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 280,
+    marginTop: 40,
+    height: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
+  },
+  spinnerTextStyle: {
+    fontFamily: 'regular',
+    color: gray,
   },
 });

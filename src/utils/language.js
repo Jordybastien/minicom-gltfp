@@ -73,6 +73,16 @@ export const languages = Object.freeze({
       text: `We've successfully received your complaint. We will get back to you shortly.`,
       button: 'Back Home',
     },
+    errorMessage: {
+      phoneNumber: 'Phone Number is required',
+      wrongPhoneNumber: 'Phone Number is invalid',
+      gender: 'Gender is required',
+      category: 'Category is required',
+      message: 'Message is required',
+      notification: 'Select at least one way to get notified',
+      email: 'Email is required',
+      wrongEmail: 'Email is invalid',
+    },
   },
   kinyarwanda: {
     tabs: {
@@ -145,6 +155,16 @@ export const languages = Object.freeze({
     successScreen: {
       text: 'Murakoze, Twakiriye ikirego cyanyu neza.',
       button: 'Subira Ahabanza',
+    },
+    errorMessage: {
+      phoneNumber: 'Nimero ya telephone irakenewe',
+      wrongPhoneNumber: 'Imibare ya nimero ya telephone ntiyuzuye',
+      gender: 'Hitamo igitsina cyawe',
+      category: `Hitamo icyiciro cy'Ikirego`,
+      message: 'Andika Ikirego',
+      notification: 'Hitamo uburyo nibura bumwe mwifuza kumenyeshwamo',
+      email: 'Email yanyu irakenewe',
+      wrongEmail: 'email ntiyemewe',
     },
   },
 });
