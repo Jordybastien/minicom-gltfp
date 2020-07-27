@@ -50,7 +50,7 @@ const TabNavigatorConfig = {
   tabBarOptions: {
     activeTintColor: blue,
     style: {
-      height: 56,
+      // height: 56,
       backgroundColor: white,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
