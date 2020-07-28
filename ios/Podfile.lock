@@ -6,6 +6,9 @@ PODS:
   - EXConstants (9.1.1):
     - UMConstantsInterface
     - UMCore
+  - EXDocumentPicker (8.2.1):
+    - UMCore
+    - UMFileSystemInterface
   - EXErrorRecovery (1.2.1):
     - UMCore
   - EXFileSystem (9.0.1):
@@ -368,6 +371,7 @@ PODS:
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXDocumentPicker (from `../node_modules/expo-document-picker/ios`)
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
@@ -468,6 +472,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
+  EXDocumentPicker:
+    :path: "../node_modules/expo-document-picker/ios"
   EXErrorRecovery:
     :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
@@ -587,6 +593,7 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXConstants: c2c6d5805520a34f274e09b778404310c52b118f
+  EXDocumentPicker: 274a7699925eb0e3e6a5b267c7ad152ae98e98dc
   EXErrorRecovery: 59499558ff624ba190bc3c3ff9d5b8e983edcb18
   EXFileSystem: 8d1dc2924d62046275c84d70b88fa3aa7daeb116
   EXFont: 363ab50f9e9a1cd2b990c7d74e5ad168743bc62b

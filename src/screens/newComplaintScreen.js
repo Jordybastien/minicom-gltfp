@@ -25,6 +25,7 @@ import { Picker, Item } from 'native-base';
 import Toast from 'react-native-simple-toast';
 import { sendComplaint } from '../services/complaint';
 import Spinner from 'react-native-loading-spinner-overlay';
+import * as AndroidDocumentPicker from 'expo-document-picker';
 
 const { width, height } = Dimensions.get('window');
 
@@ -60,6 +61,7 @@ class NewComplaintScreen extends Component {
     emailAddress: '',
     loading: false,
     spinner: false,
+    documents: null,
   };
 
   componentDidMount() {
@@ -100,6 +102,7 @@ class NewComplaintScreen extends Component {
       email,
       language,
       message,
+      documents,
     } = this.state;
 
     let response = true;
@@ -144,29 +147,57 @@ class NewComplaintScreen extends Component {
       errorMessage = languages[language].errorMessage.wrongPhoneNumber;
     }
 
-    const data = { gender, message };
-    data.phone_number = phoneNumber;
-    data.gender;
-    data.complain_id = selCategory;
-    data.notified_by_phone = phoneNumber;
-    data.notified_by_email = emailAddress;
+    if (documents && documents.length !== 0) {
+      let data = new FormData();
+      console.log('=============> documents ===========>', documents);
 
-    errorMessage && Toast.show(errorMessage, Toast.LONG);
-    return { response, data };
+      data.append('phone_number', phoneNumber);
+      data.append('complain_id', selCategory);
+      data.append('notified_by_phone', phoneNumber);
+      data.append('notified_by_email', emailAddress);
+      data.append('gender', gender);
+      data.append('message', message);
+      documents.forEach((document) =>
+        data.append('complaint_doc[]', document, document.name)
+      );
+      console.log('=============> data ===========>', data);
+      errorMessage && Toast.show(errorMessage, Toast.LONG);
+      return { response, data };
+    } else {
+      let data = {};
+
+      data.phone_number = phoneNumber;
+      data.complain_id = selCategory;
+      data.notified_by_phone = phoneNumber;
+      data.notified_by_email = emailAddress;
+      data.gender = gender;
+      data.message = message;
+
+      errorMessage && Toast.show(errorMessage, Toast.LONG);
+      return { response, data };
+    }
   };
 
   handleUpload = async () => {
-    console.log('======>Triggered');
     try {
-      const results = await DocumentPicker.pickMultiple({
-        type: [DocumentPicker.types.allFiles],
-      });
-      for (const res of results) {
-        console.log('==========>uri', res.uri);
-        console.log('==========>type', res.type);
-        console.log('==========>name', res.name);
-        console.log('==========>size', res.size);
+      let arr = [];
+      let results;
+      if (Platform.OS === 'ios') {
+        results = await DocumentPicker.pickMultiple({
+          type: [DocumentPicker.types.allFiles],
+        });
+        results.map((res) => arr.push(res));
+      } else {
+        results = await AndroidDocumentPicker.getDocumentAsync({
+          copyToCacheDirectory: true,
+          multiple: true,
+        });
+        results.type = 'application/pdf';
+
+        arr.push(results);
       }
+
+      this.setState({ documents: arr });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs or menus and move on
@@ -192,6 +223,7 @@ class NewComplaintScreen extends Component {
       message,
       loading,
       spinner,
+      documents,
     } = this.state;
     genders[0].label = languages[language].newComplaintScreen.male;
     genders[1].label = languages[language].newComplaintScreen.female;
@@ -432,11 +464,14 @@ class NewComplaintScreen extends Component {
                           Do you want to upload supporting documents?
                         </Text>
                         <Text style={styles.optional}>Optional</Text>
-                        <View style={{ paddingTop: 10 }}>
-                          <Text style={[styles.optional, { color: gray }]}>
-                            3 files
-                          </Text>
-                        </View>
+                        {documents && documents.length !== 0 && (
+                          <View style={{ paddingTop: 10 }}>
+                            <Text style={[styles.optional, { color: gray }]}>
+                              {documents.length} file
+                              {documents.length > 1 && 's'}
+                            </Text>
+                          </View>
+                        )}
                       </View>
                       <View style={styles.uploadContainer}>
                         <TouchableOpacity
