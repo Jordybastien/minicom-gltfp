@@ -34,10 +34,9 @@ class SettingsLanguageScreen extends Component {
   handleLanguageSubmit = () => {
     const { setLanguage } = this.state;
     this.props.dispatch(handleLanguage(setLanguage));
-    // TODO: Change to SplashScreen
     this.props.navigation.reset({
       index: 0,
-      routes: [{ name: 'OnBoardingScreen' }],
+      routes: [{ name: 'SplashScreen' }],
     });
   };
 

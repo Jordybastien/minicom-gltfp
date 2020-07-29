@@ -88,6 +88,8 @@ target 'gltfp' do
   add_flipper_pods!
 
 
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+
   post_install do |installer|
     flipper_post_install(installer)
   end

@@ -67,6 +67,10 @@ export const languages = Object.freeze({
       notificationLabel: 'How would you like to be notified?',
       emailLabel: 'What is your email?',
       emailPlaceholder: 'Email',
+      documentLabel:'Do you want to upload supporting documents?',
+      documentOptional:'Optional',
+      fileNum:'file',
+      uploadBtn:'Upload',
       button: 'Send',
     },
     successScreen: {
@@ -152,6 +156,10 @@ export const languages = Object.freeze({
       notificationLabel: 'Murifuza kumenyeshwa gute?',
       emailLabel: 'Email',
       emailPlaceholder: 'Email',
+      documentLabel:'Waba ufite dosiye wifuza kwohereza?',
+      documentOptional:'si itegeko',
+      fileNum:'dosiye',
+      uploadBtn:'Dosiye',
       button: 'Ohereze',
     },
     successScreen: {

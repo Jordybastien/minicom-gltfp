@@ -149,7 +149,6 @@ class NewComplaintScreen extends Component {
 
     if (documents && documents.length !== 0) {
       let data = new FormData();
-      console.log('=============> documents ===========>', documents);
 
       data.append('phone_number', phoneNumber);
       data.append('complain_id', selCategory);
@@ -160,7 +159,7 @@ class NewComplaintScreen extends Component {
       documents.forEach((document) =>
         data.append('complaint_doc[]', document, document.name)
       );
-      console.log('=============> data ===========>', data);
+
       errorMessage && Toast.show(errorMessage, Toast.LONG);
       return { response, data };
     } else {
@@ -196,11 +195,13 @@ class NewComplaintScreen extends Component {
 
         arr.push(results);
       }
-
-      this.setState({ documents: arr });
+      const { documents } = this.state;
+      this.setState({
+        documents:
+          documents && documents.length !== 0 ? documents.concat(arr) : arr,
+      });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
       } else {
         throw err;
       }
@@ -443,13 +444,16 @@ class NewComplaintScreen extends Component {
                       <View style={styles.txtBoxContainer}>
                         <View style={styles.txtBoxLabelContainer}>
                           <Text style={styles.txtBoxLabel}>
-                            What is your email?
+                            {languages[language].newComplaintScreen.emailLabel}
                           </Text>
                         </View>
                         <View style={styles.txtBoxInputContainer}>
                           <TextInput
                             style={styles.txtBoxInput}
-                            placeholder="Email"
+                            placeholder={
+                              languages[language].newComplaintScreen
+                                .emailPlaceholder
+                            }
                             onChangeText={(emailAddress) =>
                               this.setState({ emailAddress })
                             }
@@ -461,13 +465,19 @@ class NewComplaintScreen extends Component {
                     <View style={styles.txtBoxContainer}>
                       <View style={styles.txtBoxLabelContainer}>
                         <Text style={styles.txtBoxLabel}>
-                          Do you want to upload supporting documents?
+                          {languages[language].newComplaintScreen.documentLabel}
                         </Text>
-                        <Text style={styles.optional}>Optional</Text>
+                        <Text style={styles.optional}>
+                          {
+                            languages[language].newComplaintScreen
+                              .documentOptional
+                          }
+                        </Text>
                         {documents && documents.length !== 0 && (
                           <View style={{ paddingTop: 10 }}>
                             <Text style={[styles.optional, { color: gray }]}>
-                              {documents.length} file
+                              {documents.length}{' '}
+                              {languages[language].newComplaintScreen.fileNum}
                               {documents.length > 1 && 's'}
                             </Text>
                           </View>
@@ -478,7 +488,9 @@ class NewComplaintScreen extends Component {
                           style={styles.btn}
                           onPress={this.handleUpload}
                         >
-                          <Text style={styles.btnLabel}>Upload</Text>
+                          <Text style={styles.btnLabel}>
+                            {languages[language].newComplaintScreen.uploadBtn}
+                          </Text>
                         </TouchableOpacity>
                       </View>
                     </View>

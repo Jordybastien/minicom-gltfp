@@ -5,7 +5,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "start": "expo start",
-    "test": "jest"
+    "test": "jest",
+    "build:android": "expo build:android",
+    "build:ios": "expo build:ios"
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.0",
