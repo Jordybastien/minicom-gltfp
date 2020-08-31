@@ -14,6 +14,7 @@ import { languages } from '../utils/language';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-simple-toast';
 import { searchComplaint } from '../services/complaint';
+import { fetchCountries } from '../services/countries';
 
 const { width, height } = Dimensions.get('window');
 
@@ -40,17 +41,25 @@ class ComplaintsScreen extends Component {
     const { language } = this.state;
     if (response) {
       this.setState({ spinner: true });
-      searchComplaint(data).then((res) => {
-        this.setState({ spinner: false });
-        if (res.response_status) {
-          this.props.navigation.navigate('ComplaintDetailsScreen', {
-            name: languages[language].complaintDetailsScreen.title,
-            data: res.response_datas[0],
-          });
-        } else {
+      searchComplaint(data)
+        .then((res) => {
+          this.setState({ spinner: false });
+          if (res.response_status) {
+            fetchCountries().then((countries) =>
+              this.props.navigation.navigate('ComplaintDetailsScreen', {
+                name: languages[language].complaintDetailsScreen.title,
+                data: res.response_datas[0],
+                countries,
+              })
+            );
+          } else {
+            Toast.show(languages[language].errorMessage.notFound, Toast.LONG);
+          }
+        })
+        .catch(() => {
+          this.setState({ spinner: false });
           Toast.show(languages[language].errorMessage.notFound, Toast.LONG);
-        }
-      });
+        });
     }
   };
 
@@ -118,9 +127,10 @@ class ComplaintsScreen extends Component {
                       languages[language].complaintsScreen.phonePlaceholder
                     }
                     onChangeText={(phoneNumber) =>
-                      this.setState({ phoneNumber })
+                      !isNaN(phoneNumber) && this.setState({ phoneNumber })
                     }
                     value={phoneNumber}
+                    maxLength={10}
                   />
                 </View>
               </View>

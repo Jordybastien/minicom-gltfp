@@ -26,6 +26,7 @@ import Toast from 'react-native-simple-toast';
 import { sendComplaint } from '../services/complaint';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as AndroidDocumentPicker from 'expo-document-picker';
+import { fetchCountries } from '../services/countries';
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,15 +35,13 @@ const genders = [
   { label: 'Male', value: 'male' },
 ];
 
-const categories = [
-  {
-    label: 'Category 1',
-    value: 'cat-1',
-  },
-  {
-    label: 'Category 2',
-    value: 'cat-2',
-  },
+const businessSectors = ['Medium Scale Trader', 'Small Scale Trader'];
+
+const borderLocations = [
+  'La corniche Rubavu',
+  'Petite Barriere',
+  'Rusizi',
+  'Bugarama',
 ];
 
 class NewComplaintScreen extends Component {
@@ -57,11 +56,17 @@ class NewComplaintScreen extends Component {
     language: 'english',
     usedCategories: null,
     selCategory: '',
+    selCountry: '',
+    selBuSector: '',
+    selBorderLocation: '',
     message: '',
     emailAddress: '',
     loading: false,
     spinner: false,
     documents: null,
+    countries: null,
+    idNumber: '',
+    comNames: '',
   };
 
   componentDidMount() {
@@ -74,21 +79,28 @@ class NewComplaintScreen extends Component {
         })),
       })
     );
+    fetchCountries().then((countries) =>
+      this.setState({
+        countries,
+      })
+    );
   }
 
   handleSubmit = () => {
     const { response, data } = this.validateData();
     if (response) {
       this.setState({ spinner: true });
-      sendComplaint(data).then((res) => {
-        if (res.response_status) {
-          this.setState({ spinner: false });
-          this.props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'SuccessScreen' }],
-          });
-        }
-      });
+      sendComplaint(data)
+        .then((res) => {
+          if (res.response_status) {
+            this.setState({ spinner: false });
+            this.props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'SuccessScreen' }],
+            });
+          }
+        })
+        .catch(() => this.setState({ spinner: false }));
     }
   };
 
@@ -103,6 +115,11 @@ class NewComplaintScreen extends Component {
       language,
       message,
       documents,
+      idNumber,
+      selCountry,
+      selBuSector,
+      comNames,
+      selBorderLocation,
     } = this.state;
 
     let response = true;
@@ -124,20 +141,46 @@ class NewComplaintScreen extends Component {
       errorMessage = languages[language].errorMessage.wrongEmail;
     }
 
+    if (!selBorderLocation) {
+      response = false;
+      errorMessage = languages[language].errorMessage.borderLocation;
+    }
+
     if (!message) {
       response = false;
       errorMessage = languages[language].errorMessage.message;
     }
+    if (!comNames) {
+      response = false;
+      errorMessage = languages[language].errorMessage.comNames;
+    }
 
+    if (!selBuSector) {
+      response = false;
+      errorMessage = languages[language].errorMessage.buSector;
+    }
     if (!selCategory) {
       response = false;
       errorMessage = languages[language].errorMessage.category;
+    }
+    if (!selCountry) {
+      response = false;
+      errorMessage = languages[language].errorMessage.country;
     }
 
     if (!gender) {
       response = false;
       errorMessage = languages[language].errorMessage.gender;
     }
+
+    if (!idNumber) {
+      response = false;
+      errorMessage = languages[language].errorMessage.idNumber;
+    }
+    // else if (idNumber.length < 16 || idNumber.length > 16) {
+    //   response = false;
+    //   errorMessage = languages[language].errorMessage.wrongIdNumber;
+    // }
 
     if (!phoneNumber) {
       response = false;
@@ -151,11 +194,16 @@ class NewComplaintScreen extends Component {
       let data = new FormData();
 
       data.append('phone_number', phoneNumber);
+      data.append('id_number', idNumber);
+      data.append('country_id', selCountry);
       data.append('complain_id', selCategory);
+      data.append('business_sector', selBuSector);
+      data.append('border_location', selBorderLocation);
       data.append('notified_by_phone', phoneNumber);
       data.append('notified_by_email', emailAddress);
       data.append('gender', gender);
       data.append('message', message);
+      data.append('commodities_names', comNames);
       documents.forEach((document) =>
         data.append('complaint_doc[]', document, document.name)
       );
@@ -166,11 +214,16 @@ class NewComplaintScreen extends Component {
       let data = {};
 
       data.phone_number = phoneNumber;
+      data.id_number = idNumber;
+      data.country_id = selCountry;
       data.complain_id = selCategory;
+      data.business_sector = selBuSector;
+      data.border_location = selBorderLocation;
       data.notified_by_phone = phoneNumber;
       data.notified_by_email = emailAddress;
       data.gender = gender;
       data.message = message;
+      data.commodities_names = comNames;
 
       errorMessage && Toast.show(errorMessage, Toast.LONG);
       return { response, data };
@@ -210,6 +263,12 @@ class NewComplaintScreen extends Component {
 
   handleCategory = (data) => this.setState({ selCategory: data });
 
+  handleCountry = (data) => this.setState({ selCountry: data });
+
+  handleBuSector = (data) => this.setState({ selBuSector: data });
+
+  handleBorderLocation = (data) => this.setState({ selBorderLocation: data });
+
   render() {
     const {
       phoneNumber,
@@ -225,6 +284,12 @@ class NewComplaintScreen extends Component {
       loading,
       spinner,
       documents,
+      countries,
+      idNumber,
+      selCountry,
+      selBuSector,
+      comNames,
+      selBorderLocation,
     } = this.state;
     genders[0].label = languages[language].newComplaintScreen.male;
     genders[1].label = languages[language].newComplaintScreen.female;
@@ -239,7 +304,8 @@ class NewComplaintScreen extends Component {
             source={require('../../assets/bg_lines.png')}
             style={{
               width,
-              height: Platform.OS === 'ios' ? height + 250 : height + 280,
+              // height: Platform.OS === 'ios' ? height + 600 : height + 830,
+              // height,
             }}
           >
             {spinner ? (
@@ -268,26 +334,34 @@ class NewComplaintScreen extends Component {
                               .phonePlaceholder
                           }
                           onChangeText={(phoneNumber) =>
+                            !isNaN(phoneNumber) &&
                             this.setState({ phoneNumber })
                           }
                           value={phoneNumber}
+                          maxLength={10}
                         />
                       </View>
                     </View>
-                    {/* <View style={styles.txtBoxContainer}>
-                <View style={styles.txtBoxLabelContainer}>
-                  <Text style={styles.txtBoxLabel}>
-                    {languages[language].newComplaintScreen.genderLabel}
-                  </Text>
-                </View>
-                <RadioForm
-                  radio_props={genders}
-                  animation={true}
-                  formHorizontal={true}
-                  onPress={(value) => this.setState({ gender: value })}
-                  style={styles.radionBtn}
-                />
-              </View> */}
+                    <View style={styles.txtBoxContainer}>
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {languages[language].newComplaintScreen.idLabel}
+                        </Text>
+                      </View>
+                      <View style={styles.txtBoxInputContainer}>
+                        <TextInput
+                          style={styles.txtBoxInput}
+                          placeholder={
+                            languages[language].newComplaintScreen.idPlaceholder
+                          }
+                          onChangeText={(idNumber) =>
+                            !isNaN(idNumber) && this.setState({ idNumber })
+                          }
+                          value={idNumber}
+                          // maxLength={16}
+                        />
+                      </View>
+                    </View>
                     <View style={[styles.txtBoxContainer, { marginBottom: 0 }]}>
                       <View style={styles.txtBoxLabelContainer}>
                         <Text style={styles.txtBoxLabel}>
@@ -321,8 +395,60 @@ class NewComplaintScreen extends Component {
                         />
                       </View>
                     </View>
+                    {countries && (
+                      <View
+                        style={[styles.txtBoxContainer, { marginBottom: 30 }]}
+                      >
+                        <View style={styles.txtBoxLabelContainer}>
+                          <Text style={styles.txtBoxLabel}>
+                            {
+                              languages[language].newComplaintScreen
+                                .countryLabel
+                            }
+                          </Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                          <Item
+                            picker
+                            style={[styles.txtBox, { marginBottom: 0 }]}
+                          >
+                            <Picker
+                              mode="dropdown"
+                              style={{ width: 100, color: '#C7C7CD' }}
+                              onValueChange={(value) =>
+                                this.handleCountry(value)
+                              }
+                              placeholder={
+                                languages[language].newComplaintScreen
+                                  .selectCountryLabel
+                              }
+                              style={{ width: undefined }}
+                              selectedValue={selCountry}
+                            >
+                              <Picker.Item
+                                label={
+                                  languages[language].newComplaintScreen
+                                    .selectCountryLabel
+                                }
+                                value={null}
+                              />
+                              {countries &&
+                                countries.map(
+                                  ({ country_code, country_name }, index) => (
+                                    <Picker.Item
+                                      key={index}
+                                      label={country_name}
+                                      value={country_code}
+                                    />
+                                  )
+                                )}
+                            </Picker>
+                          </Item>
+                        </View>
+                      </View>
+                    )}
                     <View
-                      style={[styles.txtBoxContainer, { marginBottom: 75 }]}
+                      style={[styles.txtBoxContainer, { marginBottom: 30 }]}
                     >
                       <View style={styles.txtBoxLabelContainer}>
                         <Text style={styles.txtBoxLabel}>
@@ -330,28 +456,6 @@ class NewComplaintScreen extends Component {
                         </Text>
                       </View>
                       <View style={{ flex: 1 }}>
-                        {/* <DropDownPicker
-                    items={usedCategories}
-                    defaultValue={category}
-                    containerStyle={{ height: 50 }}
-                    style={styles.picker}
-                    itemStyle={{
-                      justifyContent: 'flex-start',
-                    }}
-                    dropDownStyle={{ backgroundColor: lowGray }}
-                    onChangeItem={(item) =>
-                      this.setState({
-                        category: item.value,
-                      })
-                    }
-                    searchable={true}
-                    placeholder={
-                      languages[language].newComplaintScreen.selectLabel
-                    }
-                    searchablePlaceholder={
-                      languages[language].newComplaintScreen.searchLabel
-                    }
-                  /> */}
                         <Item picker style={[styles.txtBox]}>
                           <Picker
                             mode="dropdown"
@@ -384,6 +488,68 @@ class NewComplaintScreen extends Component {
                         </Item>
                       </View>
                     </View>
+                    <View
+                      style={[styles.txtBoxContainer, { marginBottom: 30 }]}
+                    >
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {languages[language].newComplaintScreen.buSectorLabel}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Item picker style={[styles.txtBox]}>
+                          <Picker
+                            mode="dropdown"
+                            style={{ width: 100, color: '#C7C7CD' }}
+                            onValueChange={(value) =>
+                              this.handleBuSector(value)
+                            }
+                            placeholder={
+                              languages[language].newComplaintScreen
+                                .buSectorLabel
+                            }
+                            style={{ width: undefined }}
+                            selectedValue={selBuSector}
+                          >
+                            <Picker.Item
+                              label={
+                                languages[language].newComplaintScreen
+                                  .selectBuSectorLabel
+                              }
+                              value={null}
+                            />
+                            {businessSectors &&
+                              businessSectors.map((item, index) => (
+                                <Picker.Item
+                                  key={index}
+                                  label={item}
+                                  value={item}
+                                />
+                              ))}
+                          </Picker>
+                        </Item>
+                      </View>
+                    </View>
+                    <View style={styles.txtBoxContainer}>
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {languages[language].newComplaintScreen.comNamesLabel}
+                        </Text>
+                      </View>
+                      <View style={styles.txtBoxInputContainer}>
+                        <TextInput
+                          style={styles.txtBoxInput}
+                          placeholder={
+                            languages[language].newComplaintScreen
+                              .comNamesPlaceholder
+                          }
+                          onChangeText={(comNames) =>
+                            this.setState({ comNames })
+                          }
+                          value={comNames}
+                        />
+                      </View>
+                    </View>
                     <View style={styles.txtBoxContainer}>
                       <View style={styles.txtBoxLabelContainer}>
                         <Text style={styles.txtBoxLabel}>
@@ -402,6 +568,51 @@ class NewComplaintScreen extends Component {
                           multiline={true}
                           numberOfLines={4}
                         />
+                      </View>
+                    </View>
+                    <View
+                      style={[styles.txtBoxContainer, { marginBottom: 30 }]}
+                    >
+                      <View style={styles.txtBoxLabelContainer}>
+                        <Text style={styles.txtBoxLabel}>
+                          {
+                            languages[language].newComplaintScreen
+                              .borderLocationLabel
+                          }
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Item picker style={[styles.txtBox]}>
+                          <Picker
+                            mode="dropdown"
+                            style={{ width: 100, color: '#C7C7CD' }}
+                            onValueChange={(value) =>
+                              this.handleBorderLocation(value)
+                            }
+                            placeholder={
+                              languages[language].newComplaintScreen
+                                .borderLocationLabel
+                            }
+                            style={{ width: undefined }}
+                            selectedValue={selBorderLocation}
+                          >
+                            <Picker.Item
+                              label={
+                                languages[language].newComplaintScreen
+                                  .selectBorderLocationLabel
+                              }
+                              value={null}
+                            />
+                            {borderLocations &&
+                              borderLocations.map((item, index) => (
+                                <Picker.Item
+                                  key={index}
+                                  label={item}
+                                  value={item}
+                                />
+                              ))}
+                          </Picker>
+                        </Item>
                       </View>
                     </View>
                     <View style={[styles.txtBoxContainer, { marginBottom: 0 }]}>
@@ -458,6 +669,7 @@ class NewComplaintScreen extends Component {
                               this.setState({ emailAddress })
                             }
                             value={emailAddress}
+                            autoCapitalize="none"
                           />
                         </View>
                       </View>
@@ -494,9 +706,7 @@ class NewComplaintScreen extends Component {
                         </TouchableOpacity>
                       </View>
                     </View>
-                    <View
-                      style={Platform.OS === 'android' && styles.androidResp}
-                    >
+                    <View style={styles.androidResp}>
                       <Button
                         label={languages[language].newComplaintScreen.button}
                         handleClick={this.handleSubmit}
@@ -623,7 +833,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   txtBox: {
     backgroundColor: lowGray,

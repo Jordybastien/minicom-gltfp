@@ -6,6 +6,6 @@ export const sendComplaint = async (data) => {
 };
 
 export const searchComplaint = async (data) => {
-  const res = await api.post('/auth/FollowComplainMobileV2', data);
+  const res = await api.post('/auth/FollowComplainMobile', data);
   return res.data;
 };
