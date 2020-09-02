@@ -367,7 +367,7 @@ class NewComplaintScreen extends Component {
                         <Text style={styles.txtBoxLabel}>
                           {
                             languages[language].newComplaintScreen
-                              .notificationLabel
+                              .genderLabel
                           }
                         </Text>
                       </View>

@@ -138,7 +138,7 @@ export const languages = Object.freeze({
       title: 'Kurikirana Ikirego',
       phoneTitle: 'Numero ya telephone yawe?',
       phonePlaceholder: 'Numero ya telephone',
-      complaintTitle: `Numer y'ikirego cyawe?`,
+      complaintTitle: `Numero y'ikirego cyawe?`,
       complaintPlaceholder: `Numero y'ikirego`,
       buttonLabel: 'Shakisha',
       comNames: `Amazina y'Ibicuruzwa`,
@@ -154,6 +154,9 @@ export const languages = Object.freeze({
       status: 'Imiterere',
       idNumber: `Numero y'Indangamuntu`,
       buSector: `Urwego rw' Ubucuruzi`,
+      comNames: `Amazina y'ibicuruzwa`,
+      borderLocation: 'Umupaka',
+      complainant:`Ubwenegihugu bw'urega`
     },
     settingsScreen: {
       language: 'Hindura Ururimi',

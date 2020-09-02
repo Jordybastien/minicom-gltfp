@@ -29,7 +29,7 @@ const SettingsScreen = (props) => {
       >
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>Account</Text>
+            <Text style={styles.headerTitle}>Settings</Text>
           </View>
           <View style={styles.settingsContainer}>
             <View>
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop: 10,
   },
   headerContainer: {
     paddingTop: 80,

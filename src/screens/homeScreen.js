@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { blue, white } from '../utils/colors';
 import { getLanguage } from '../utils/storage';
 import { languages } from '../utils/language';
@@ -36,7 +36,7 @@ const HomeScreen = (props) => {
           </View>
           <View style={styles.btnContainer}>
             <TouchableOpacity
-              style={styles.btn}
+              style={[styles.btn, { marginRight: 5 }]}
               onPress={() =>
                 props.navigation.navigate('NewComplaintScreen', {
                   name: languages[language].newComplaintScreen.title,
@@ -51,6 +51,19 @@ const HomeScreen = (props) => {
                 size={40}
                 color={white}
               />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.btn, styles.customizeBtn]}
+              onPress={() =>
+                props.navigation.navigate('NewComplaintScreen', {
+                  name: languages[language].newComplaintScreen.title,
+                })
+              }
+            >
+              <Text style={[styles.btnLabel, styles.customizeBtnLabel]}>
+                Feedback
+              </Text>
+              <MaterialIcons name="feedback" size={24} color={blue} />
             </TouchableOpacity>
           </View>
         </View>
@@ -81,12 +94,14 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   btnContainer: {
-    width: width - 100,
+    width: width - 50,
+    flexDirection: 'row',
   },
   btn: {
     backgroundColor: blue,
     borderRadius: 30,
-    width: 220,
+    // width: 220,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
@@ -99,13 +114,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-    display: 'flex',
     flexDirection: 'row',
   },
   btnLabel: {
     fontFamily: 'bold',
     color: white,
-    fontSize: 20,
-    marginRight: 10,
+    fontSize: 16,
+    marginRight: 5,
+  },
+  customizeBtn: {
+    backgroundColor: white,
+    borderColor: blue,
+    borderWidth: 1,
+  },
+  customizeBtnLabel: {
+    color: blue,
   },
 });

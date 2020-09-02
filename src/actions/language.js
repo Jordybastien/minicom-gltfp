@@ -8,6 +8,13 @@ const changeLanguage = (language) => {
   };
 };
 
+const fetchLanguages = (languages) => {
+  return {
+    type: FETCH_LANGUAGES,
+    languages,
+  };
+};
+
 export const handleLanguage = (language) => {
   return async (dispatch) => {
     setLanguage(language);

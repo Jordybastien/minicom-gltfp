@@ -43,16 +43,18 @@ class ComplaintsScreen extends Component {
       this.setState({ spinner: true });
       searchComplaint(data)
         .then((res) => {
-          this.setState({ spinner: false });
-          if (res.response_status) {
-            fetchCountries().then((countries) =>
+          if (res.response_status === true) {
+            fetchCountries().then((countries) => {
+              this.setState({ spinner: false });
               this.props.navigation.navigate('ComplaintDetailsScreen', {
                 name: languages[language].complaintDetailsScreen.title,
                 data: res.response_datas[0],
                 countries,
-              })
-            );
+              });
+            });
           } else {
+            console.log()
+            this.setState({ spinner: false });
             Toast.show(languages[language].errorMessage.notFound, Toast.LONG);
           }
         })

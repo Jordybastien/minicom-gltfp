@@ -1,2 +1,8 @@
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
+
+export const FETCH_LANGUAGES = 'FETCH_LANGUAGES';
+
+export const LOG_ERROR = 'LOG_ERROR';
+export const LOADING = 'LOADING';
+export const NOT_LOADING = 'NOT_LOADING';

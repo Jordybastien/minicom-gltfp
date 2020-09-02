@@ -100,7 +100,7 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.complaintNumber}
+                    {languages[language].complaintDetailsScreen.description}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 80,
+    paddingTop: 20,
     paddingLeft: 30,
   },
   detailContainer: {

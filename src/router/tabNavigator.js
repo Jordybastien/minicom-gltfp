@@ -28,7 +28,7 @@ const RouteConfigs = {
           color={focused ? blue : gray}
         />
       ),
-      title: 'Complaints',
+      title: 'Follow Complaint',
     },
   },
   SettingsScreen: {
@@ -50,7 +50,6 @@ const TabNavigatorConfig = {
   tabBarOptions: {
     activeTintColor: blue,
     style: {
-      // height: 56,
       backgroundColor: white,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
