@@ -9,17 +9,20 @@ import {
 } from 'react-native';
 import { blue, white, gray, lowGray } from '../utils/colors';
 import { getLanguage } from '../utils/storage';
-import { languages } from '../utils/language';
+import { languages, startUpLanguage } from '../utils/language';
 import { MaterialIcons, Foundation } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
 const SettingsScreen = (props) => {
-  const [language, setLanguage] = useState('english');
+  const [language, setLanguage] = useState(startUpLanguage);
 
   useEffect(() => {
     getLanguage().then((data) => data && setLanguage(data));
   });
+
+  const { keywords } = props;
 
   return (
     <View style={styles.mainContainer}>
@@ -29,7 +32,12 @@ const SettingsScreen = (props) => {
       >
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>Settings</Text>
+            <Text style={styles.headerTitle}>
+              {' '}
+              {keywords[language].setting
+                ? keywords[language].setting
+                : keywords[startUpLanguage].setting}
+            </Text>
           </View>
           <View style={styles.settingsContainer}>
             <View>
@@ -37,7 +45,9 @@ const SettingsScreen = (props) => {
                 style={styles.settingsItem}
                 onPress={() =>
                   props.navigation.navigate('SettingsLanguageScreen', {
-                    name: languages[language].settingsLanguageScreen.title,
+                    name: keywords[language].change_language
+                      ? keywords[language].change_language
+                      : keywords[startUpLanguage].change_language,
                   })
                 }
               >
@@ -46,7 +56,9 @@ const SettingsScreen = (props) => {
                 </View>
                 <View style={styles.itemLabelContainer}>
                   <Text style={styles.itemLabel}>
-                    {languages[language].settingsScreen.language}
+                    {keywords[language].change_language
+                      ? keywords[language].change_language
+                      : keywords[startUpLanguage].change_language}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -56,7 +68,9 @@ const SettingsScreen = (props) => {
                 style={styles.settingsItem}
                 onPress={() =>
                   props.navigation.navigate('AboutUsScreen', {
-                    name: languages[language].aboutUsScreen.title,
+                    name: keywords[language].footer_menu_title
+                      ? keywords[language].footer_menu_title
+                      : keywords[startUpLanguage].footer_menu_title,
                   })
                 }
               >
@@ -65,7 +79,9 @@ const SettingsScreen = (props) => {
                 </View>
                 <View style={styles.itemLabelContainer}>
                   <Text style={styles.itemLabel}>
-                    {languages[language].settingsScreen.aboutUs}
+                    {keywords[language].footer_menu_title
+                      ? keywords[language].footer_menu_title
+                      : keywords[startUpLanguage].footer_menu_title}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -77,7 +93,13 @@ const SettingsScreen = (props) => {
   );
 };
 
-export default SettingsScreen;
+const mapStateToProps = ({ keywords }) => {
+  return {
+    keywords,
+  };
+};
+
+export default connect(mapStateToProps)(SettingsScreen);
 
 const styles = StyleSheet.create({
   mainContainer: {

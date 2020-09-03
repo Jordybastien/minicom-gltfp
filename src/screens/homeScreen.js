@@ -10,16 +10,18 @@ import {
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { blue, white } from '../utils/colors';
 import { getLanguage } from '../utils/storage';
-import { languages } from '../utils/language';
+import { languages, startUpLanguage } from '../utils/language';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
 const HomeScreen = (props) => {
-  const [language, setLanguage] = useState('english');
+  const [language, setLanguage] = useState(startUpLanguage);
 
   useEffect(() => {
     getLanguage().then((data) => data && setLanguage(data));
   });
+  const { keywords } = props;
 
   return (
     <View style={styles.mainContainer}>
@@ -30,8 +32,9 @@ const HomeScreen = (props) => {
         <View style={styles.container}>
           <View style={styles.welcomeContainer}>
             <Text style={styles.welcome}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              {keywords[language].slider_paragraph
+                ? keywords[language].slider_paragraph
+                : keywords[startUpLanguage].slider_paragraph}
             </Text>
           </View>
           <View style={styles.btnContainer}>
@@ -39,12 +42,16 @@ const HomeScreen = (props) => {
               style={[styles.btn, { marginRight: 5 }]}
               onPress={() =>
                 props.navigation.navigate('NewComplaintScreen', {
-                  name: languages[language].newComplaintScreen.title,
+                  name: keywords[language].complain_form_title
+                    ? keywords[language].complain_form_title
+                    : keywords[startUpLanguage].complain_form_title,
                 })
               }
             >
               <Text style={styles.btnLabel}>
-                {languages[language].homeScreen.button}
+                {keywords[language].complain_form_title
+                  ? keywords[language].complain_form_title
+                  : keywords[startUpLanguage].complain_form_title}
               </Text>
               <Ionicons
                 name="ios-arrow-round-forward"
@@ -61,7 +68,9 @@ const HomeScreen = (props) => {
               }
             >
               <Text style={[styles.btnLabel, styles.customizeBtnLabel]}>
-                Feedback
+                {keywords[language].feed_back_label_button
+                  ? keywords[language].feed_back_label_button
+                  : keywords[startUpLanguage].feed_back_label_button}
               </Text>
               <MaterialIcons name="feedback" size={24} color={blue} />
             </TouchableOpacity>
@@ -72,7 +81,13 @@ const HomeScreen = (props) => {
   );
 };
 
-export default HomeScreen;
+const mapStateToProps = ({ keywords }) => {
+  return {
+    keywords,
+  };
+};
+
+export default connect(mapStateToProps)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +102,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontFamily: 'bold',
     color: blue,
-    fontSize: 25,
+    fontSize: 18,
   },
   welcomeContainer: {
     width: width - 100,

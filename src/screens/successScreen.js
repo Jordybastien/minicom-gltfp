@@ -7,20 +7,23 @@ import {
   Dimensions,
 } from 'react-native';
 import HeaderLogo from '../components/headerLogo';
-import { white, blue, gray } from '../utils/colors';
+import { white, blue, gray, yellow } from '../utils/colors';
 import { getLanguage } from '../utils/storage';
-import { languages } from '../utils/language';
+import { languages, startUpLanguage } from '../utils/language';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import Button from '../components/button';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
 const SuccessScreen = (props) => {
-  const [language, setLanguage] = useState('english');
+  const [language, setLanguage] = useState(startUpLanguage);
 
   useEffect(() => {
     getLanguage().then((data) => data && setLanguage(data));
   });
+
+  const { keywords } = props;
   return (
     <View>
       <ImageBackground
@@ -32,12 +35,25 @@ const SuccessScreen = (props) => {
           <View style={styles.container}>
             <AntDesign name="checkcircle" size={200} color={blue} />
             <View style={styles.textContainer}>
+              <Text style={styles.headerText}>
+                {keywords[language].thanks_label
+                  ? keywords[language].thanks_label
+                  : keywords[startUpLanguage].thanks_label}
+              </Text>
+            </View>
+            <View style={styles.textContainer}>
               <Text style={styles.text}>
-                {languages[language].successScreen.text}
+                {keywords[language].feedback_label
+                  ? keywords[language].feedback_label
+                  : keywords[startUpLanguage].feedback_label}
               </Text>
             </View>
             <Button
-              label={languages[language].successScreen.button}
+              label={
+                keywords[language].back_home
+                  ? keywords[language].back_home
+                  : keywords[startUpLanguage].back_home
+              }
               handleClick={() =>
                 props.navigation.reset({
                   index: 0,
@@ -52,7 +68,13 @@ const SuccessScreen = (props) => {
   );
 };
 
-export default SuccessScreen;
+const mapStateToProps = ({ keywords }) => {
+  return {
+    keywords,
+  };
+};
+
+export default connect(mapStateToProps)(SuccessScreen);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -93,9 +115,15 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   text: {
-    color: blue,
+    color: gray,
     fontFamily: 'regular',
     fontSize: 20,
+    textAlign: 'center',
+  },
+  headerText: {
+    color: blue,
+    fontFamily: 'bold',
+    fontSize: 25,
     textAlign: 'center',
   },
 });

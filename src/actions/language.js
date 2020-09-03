@@ -1,4 +1,8 @@
-import { CHANGE_LANGUAGE } from './actionTypes';
+import {
+  CHANGE_LANGUAGE,
+  FETCH_LANGUAGES,
+  FETCH_KEYWORDS,
+} from './actionTypes';
 import { setLanguage } from '../utils/storage';
 
 const changeLanguage = (language) => {
@@ -8,10 +12,17 @@ const changeLanguage = (language) => {
   };
 };
 
-const fetchLanguages = (languages) => {
+export const getLanguages = (languages) => {
   return {
     type: FETCH_LANGUAGES,
     languages,
+  };
+};
+
+export const getKeywords = (keywords) => {
+  return {
+    type: FETCH_KEYWORDS,
+    keywords,
   };
 };
 

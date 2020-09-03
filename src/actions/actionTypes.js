@@ -6,3 +6,6 @@ export const FETCH_LANGUAGES = 'FETCH_LANGUAGES';
 export const LOG_ERROR = 'LOG_ERROR';
 export const LOADING = 'LOADING';
 export const NOT_LOADING = 'NOT_LOADING';
+export const FETCH_KEYWORDS = 'FETCH_KEYWORDS';
+
+export const FETCH_COUNTRIES = 'FETCH_COUNTRIES';

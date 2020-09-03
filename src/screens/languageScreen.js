@@ -12,17 +12,13 @@ import RadioForm from 'react-native-simple-radio-button';
 import Button from '../components/button';
 import { handleLanguage } from '../actions/language';
 import { connect } from 'react-redux';
+import { startUpLanguage } from '../utils/language';
 
 const { width, height } = Dimensions.get('window');
 
-const languages = [
-  { label: 'English', value: 'english' },
-  { label: 'Kinyarwanda', value: 'kinyarwanda' },
-];
-
 class LanguageScreen extends Component {
   state = {
-    language: '',
+    language: startUpLanguage,
   };
 
   handleLanguageSubmit = () => {
@@ -36,6 +32,9 @@ class LanguageScreen extends Component {
   };
 
   render() {
+    const { languages: fetchedLanguages, keywords } = this.props;
+    const { language } = this.state;
+
     return (
       <View>
         <ImageBackground
@@ -46,15 +45,20 @@ class LanguageScreen extends Component {
             <HeaderLogo />
             <View style={styles.container}>
               <View style={styles.textContainer}>
-                <Text style={styles.label}>Choose Language</Text>
+                <Text style={styles.label}>
+                  {keywords[language].choose_language_label
+                    ? keywords[language].choose_language_label
+                    : keywords[startUpLanguage].choose_language_label}
+                </Text>
                 <Text style={styles.description}>
-                  Select in which Language you would like to use the
-                  Application.
+                  {keywords[language].select_language_label
+                    ? keywords[language].select_language_label
+                    : keywords[startUpLanguage].select_language_label}
                 </Text>
               </View>
               <View>
                 <RadioForm
-                  radio_props={languages}
+                  radio_props={fetchedLanguages}
                   initial={0}
                   animation={true}
                   onPress={(value) => this.setState({ language: value })}
@@ -73,7 +77,19 @@ class LanguageScreen extends Component {
   }
 }
 
-export default connect()(LanguageScreen);
+const mapStateToProps = ({ languages, keywords }) => {
+  return {
+    languages: Object.values(languages).map(
+      ({ language_name: label, language_abbreviation: value }) => ({
+        label,
+        value,
+      })
+    ),
+    keywords,
+  };
+};
+
+export default connect(mapStateToProps)(LanguageScreen);
 
 const styles = StyleSheet.create({
   mainContainer: {

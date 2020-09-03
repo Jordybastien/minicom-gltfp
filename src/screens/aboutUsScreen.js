@@ -9,16 +9,20 @@ import {
 import HeaderLogo from '../components/headerLogo';
 import { white, blue, gray } from '../utils/colors';
 import { getLanguage } from '../utils/storage';
-import { languages } from '../utils/language';
+import { languages, startUpLanguage } from '../utils/language';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
-const AboutUsScreen = () => {
-  const [language, setLanguage] = useState('english');
+const AboutUsScreen = (props) => {
+  const [language, setLanguage] = useState(startUpLanguage);
 
   useEffect(() => {
     getLanguage().then((data) => data && setLanguage(data));
   });
+
+  const { keywords } = props;
+
   return (
     <View>
       <ImageBackground
@@ -30,12 +34,16 @@ const AboutUsScreen = () => {
           <View style={styles.container}>
             <View style={styles.titleContainer}>
               <Text style={styles.title}>
-                {languages[language].aboutUsScreen.title}
+                {keywords[language].footer_menu_title
+                  ? keywords[language].footer_menu_title
+                  : keywords[startUpLanguage].footer_menu_title}
               </Text>
             </View>
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>
-                {languages[language].aboutUsScreen.description}
+                {keywords[language].slider_paragraph
+                  ? keywords[language].slider_paragraph
+                  : keywords[startUpLanguage].slider_paragraph}
               </Text>
             </View>
           </View>
@@ -45,7 +53,13 @@ const AboutUsScreen = () => {
   );
 };
 
-export default AboutUsScreen;
+const mapStateToProps = ({ keywords }) => {
+  return {
+    keywords,
+  };
+};
+
+export default connect(mapStateToProps)(AboutUsScreen);
 
 const styles = StyleSheet.create({
   mainContainer: {

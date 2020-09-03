@@ -10,19 +10,20 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { getLanguage, changeOnboardingStatus } from '../utils/storage';
-import { languages } from '../utils/language';
+import { languages, startUpLanguage } from '../utils/language';
 import HeaderLogo from '../components/headerLogo';
 import { blue, white, yellow } from '../utils/colors';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Dots from '../components/onBoardingDots';
 import * as Animatable from 'react-native-animatable';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
 class OnBoardingScreen extends Component {
   state = {
     count: 0,
-    language: 'english',
+    language: startUpLanguage,
   };
   componentDidMount() {
     getLanguage().then((data) => data && this.setState({ language: data }));
@@ -54,6 +55,9 @@ class OnBoardingScreen extends Component {
       directionalOffsetThreshold: 80,
     };
 
+    const { keywords } = this.props;
+    // console.log('==========>keywords', keywords);
+
     return (
       <View>
         <ImageBackground
@@ -78,7 +82,9 @@ class OnBoardingScreen extends Component {
                       style={styles.description}
                       animation="fadeInLeft"
                     >
-                      {languages[language].onBoardingScreen.text1}
+                      {keywords[language].mobile_slider_one
+                        ? keywords[language].mobile_slider_one
+                        : keywords[startUpLanguage].mobile_slider_one}
                     </Animatable.Text>
                   )}
                   {count === 1 && (
@@ -86,7 +92,9 @@ class OnBoardingScreen extends Component {
                       style={styles.description}
                       animation="fadeInLeft"
                     >
-                      {languages[language].onBoardingScreen.text2}
+                      {keywords[language].mobile_slider_two
+                        ? keywords[language].mobile_slider_two
+                        : keywords[startUpLanguage].mobile_slider_two}
                     </Animatable.Text>
                   )}
                   {count === 2 && (
@@ -94,7 +102,9 @@ class OnBoardingScreen extends Component {
                       style={styles.description}
                       animation="fadeInLeft"
                     >
-                      {languages[language].onBoardingScreen.text3}
+                      {keywords[language].mobile_slider_three
+                        ? keywords[language].mobile_slider_three
+                        : keywords[startUpLanguage].mobile_slider_three}
                     </Animatable.Text>
                   )}
                 </View>
@@ -126,10 +136,10 @@ class OnBoardingScreen extends Component {
                     {count !== 0 && (
                       <TouchableOpacity onPress={this.handlePrevious}>
                         <Text style={styles.btnLabels}>
-                          {
-                            languages[this.state.language].onBoardingScreen
-                              .previous
-                          }
+                          {keywords[language].onboarding_screen_previous_btn
+                            ? keywords[language].onboarding_screen_previous_btn
+                            : keywords[startUpLanguage]
+                                .onboarding_screen_previous_btn}
                         </Text>
                       </TouchableOpacity>
                     )}
@@ -145,10 +155,10 @@ class OnBoardingScreen extends Component {
                       <>
                         <TouchableOpacity onPress={this.handleNext}>
                           <Text style={styles.btnLabels}>
-                            {
-                              languages[this.state.language].onBoardingScreen
-                                .next
-                            }
+                            {keywords[language].onboarding_screen_next_btn
+                              ? keywords[language].onboarding_screen_next_btn
+                              : keywords[startUpLanguage]
+                                  .onboarding_screen_next_btn}
                           </Text>
                         </TouchableOpacity>
                         <View>
@@ -165,16 +175,15 @@ class OnBoardingScreen extends Component {
                         </View>
                       </>
                     ) : (
-                      <View style={{ paddingRight: 40 }}>
+                      <View>
                         <TouchableOpacity
                           style={styles.getStartedBtn}
                           onPress={this.handleNext}
                         >
                           <Text style={styles.getStartedLabel}>
-                            {
-                              languages[this.state.language].onBoardingScreen
-                                .getStarted
-                            }
+                            {keywords[language].get_started
+                              ? keywords[language].get_started
+                              : keywords[startUpLanguage].get_started}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -190,7 +199,13 @@ class OnBoardingScreen extends Component {
   }
 }
 
-export default OnBoardingScreen;
+const mapStateToProps = ({ keywords }) => {
+  return {
+    keywords,
+  };
+};
+
+export default connect(mapStateToProps)(OnBoardingScreen);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -202,10 +217,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    width,
+    width: width - 50,
     height,
     paddingTop: 10,
-    paddingBottom: 50,
+    paddingBottom: 70,
   },
   onboardingImage: {
     width: 350,
@@ -215,8 +230,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width,
-    paddingLeft: 20,
+    width: width - 50,
   },
 
   nextBtnContainer: {
@@ -224,6 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingRight: 10,
   },
   prevContainer: {
     flex: 1,

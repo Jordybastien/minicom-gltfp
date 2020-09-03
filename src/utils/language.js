@@ -1,8 +1,9 @@
+export const startUpLanguage = 'en';
 export const languages = Object.freeze({
-  english: {
+  en: {
     tabs: {
       home: 'Home',
-      complaints: 'Complaints',
+      complaints: 'Follow Complaint',
       settings: 'Settings',
     },
     splashScreen: {
@@ -41,7 +42,7 @@ export const languages = Object.freeze({
       comNames: 'Commodities Names',
       borderLocation: 'Border Location',
       comment: 'Comment',
-      complainant:'Complainant Nationality'
+      complainant: 'Complainant Nationality',
     },
     settingsScreen: {
       language: 'Change Language',
@@ -112,10 +113,10 @@ export const languages = Object.freeze({
       borderLocation: 'Border Location is required',
     },
   },
-  kinyarwanda: {
+  kin: {
     tabs: {
       home: 'Ahabanza',
-      complaints: 'Ibirego',
+      complaints: 'Kurikirana Ikirego',
       settings: 'Igenamiterere',
     },
     splashScreen: {
@@ -144,7 +145,7 @@ export const languages = Object.freeze({
       comNames: `Amazina y'Ibicuruzwa`,
       borderLocation: 'Umupaka',
       comment: 'Igisubizo',
-      complainant:`Ubwenegihugu bw'urega`
+      complainant: `Ubwenegihugu bw'urega`,
     },
     complaintDetailsScreen: {
       title: 'Ibisobanuro birambuye',
@@ -156,7 +157,7 @@ export const languages = Object.freeze({
       buSector: `Urwego rw' Ubucuruzi`,
       comNames: `Amazina y'ibicuruzwa`,
       borderLocation: 'Umupaka',
-      complainant:`Ubwenegihugu bw'urega`
+      complainant: `Ubwenegihugu bw'urega`,
     },
     settingsScreen: {
       language: 'Hindura Ururimi',

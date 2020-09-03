@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,8 @@ import {
   getOnBoardingStatus,
   changeOnboardingStatus,
 } from '../utils/storage';
+import { connect } from 'react-redux';
+import { startUpLanguage } from '../utils/language';
 
 const { width, height } = Dimensions.get('window');
 
@@ -30,26 +32,33 @@ const SplashScreen = (props) => {
     italic: require('../../assets/fonts/Montserrat-Italic.ttf'),
   });
 
-  getLanguage().then((data) => !data && setLanguage('english'));
+  getLanguage().then((data) => !data && setLanguage(startUpLanguage));
 
   getOnBoardingStatus().then((data) => {
     !data && changeOnboardingStatus(false);
     setIsShowOnboarded(data);
   });
 
-  setTimeout(() => {
-    setShowSpinner(true);
-  }, 3000);
+  useEffect(() => {
+    let timer1 = setTimeout(() => {
+      setShowSpinner(true);
+    }, 3000);
 
-  setTimeout(() => {
-    getOnBoardingStatus().then((data) => {
-      if (data) {
-        props.navigation.navigate('HomeScreen');
-      } else {
-        props.navigation.navigate('LanguageScreen');
-      }
-    });
-  }, 8000);
+    let timer2 = setTimeout(() => {
+      getOnBoardingStatus().then((data) => {
+        if (data) {
+          props.navigation.navigate('HomeScreen');
+        } else {
+          props.navigation.navigate('LanguageScreen');
+        }
+      });
+    }, 8000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
 
   return (
     <View>
@@ -86,7 +95,7 @@ const SplashScreen = (props) => {
   );
 };
 
-export default SplashScreen;
+export default connect()(SplashScreen);
 
 const styles = StyleSheet.create({
   container: {

@@ -8,13 +8,14 @@ import {
   ScrollView,
 } from 'react-native';
 import { getLanguage } from '../utils/storage';
-import { languages } from '../utils/language';
+import { languages, startUpLanguage } from '../utils/language';
 import { blue, gray } from '../utils/colors';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
 const ComplaintDetails = (props) => {
-  const [language, setLanguage] = useState('english');
+  const [language, setLanguage] = useState(startUpLanguage);
   const [country, setCountry] = useState('');
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const ComplaintDetails = (props) => {
   });
 
   const { data } = props.route.params;
+  const { keywords } = props;
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.mainContainer}>
@@ -40,7 +42,9 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitleContainer}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.complaintNumber}
+                    {keywords[language].complain_code_form
+                      ? keywords[language].complain_code_form
+                      : keywords[startUpLanguage].complain_code_form}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -52,7 +56,9 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.phoneNumber}
+                    {keywords[language].phone_form_input_title
+                      ? keywords[language].phone_form_input_title
+                      : keywords[startUpLanguage].phone_form_input_title}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -64,7 +70,9 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.idNumber}
+                    {keywords[language].id_number_input
+                      ? keywords[language].id_number_input
+                      : keywords[startUpLanguage].id_number_input}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -76,7 +84,10 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.buSector}
+                    {keywords[language].buSector_label_complaint_details
+                      ? keywords[language].buSector_label_complaint_details
+                      : keywords[startUpLanguage]
+                          .buSector_label_complaint_details}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -88,7 +99,9 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.comNames}
+                    {keywords[language].Commodities_name
+                      ? keywords[language].Commodities_name
+                      : keywords[startUpLanguage].Commodities_name}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -100,7 +113,10 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.description}
+                    {keywords[language].message_label_complaint_details
+                      ? keywords[language].message_label_complaint_details
+                      : keywords[startUpLanguage]
+                          .message_label_complaint_details}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -112,7 +128,9 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.borderLocation}
+                    {keywords[language].border_location_label
+                      ? keywords[language].border_location_label
+                      : keywords[startUpLanguage].border_location_label}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -124,19 +142,21 @@ const ComplaintDetails = (props) => {
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.complainant}
+                    {keywords[language].choose_country
+                      ? keywords[language].choose_country
+                      : keywords[startUpLanguage].choose_country}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
-                  <Text style={styles.detailDescriptionLabel}>
-                    {country}
-                  </Text>
+                  <Text style={styles.detailDescriptionLabel}>{country}</Text>
                 </View>
               </View>
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {languages[language].complaintDetailsScreen.status}
+                    {keywords[language].status_label
+                      ? keywords[language].status_label
+                      : keywords[startUpLanguage].status_label}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -149,7 +169,10 @@ const ComplaintDetails = (props) => {
                 <View style={styles.detailContainer}>
                   <View style={styles.detailTitle}>
                     <Text style={styles.detailTitleLabel}>
-                      {languages[language].complaintDetailsScreen.comment}
+                      {keywords[language].comment_label_complaint_details
+                        ? keywords[language].comment_label_complaint_details
+                        : keywords[startUpLanguage]
+                            .comment_label_complaint_details}
                     </Text>
                   </View>
                   <View style={styles.detailDescription}>
@@ -167,7 +190,13 @@ const ComplaintDetails = (props) => {
   );
 };
 
-export default ComplaintDetails;
+const mapStateToProps = ({ keywords }) => {
+  return {
+    keywords,
+  };
+};
+
+export default connect(mapStateToProps)(ComplaintDetails);
 
 const styles = StyleSheet.create({
   mainContainer: {

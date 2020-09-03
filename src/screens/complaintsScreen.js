@@ -10,18 +10,19 @@ import {
 import { blue, white, lowGray, gray } from '../utils/colors';
 import Button from '../components/button';
 import { getLanguage } from '../utils/storage';
-import { languages } from '../utils/language';
+import { languages, startUpLanguage } from '../utils/language';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-simple-toast';
 import { searchComplaint } from '../services/complaint';
 import { fetchCountries } from '../services/countries';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
 class ComplaintsScreen extends Component {
   state = {
     phoneNumber: '',
-    language: 'english',
+    language: startUpLanguage,
     complaintNo: '',
   };
 
@@ -39,49 +40,68 @@ class ComplaintsScreen extends Component {
   handleSubmit = () => {
     const { response, data } = this.validateData();
     const { language } = this.state;
+    const { keywords, countries } = this.props;
     if (response) {
       this.setState({ spinner: true });
       searchComplaint(data)
         .then((res) => {
           if (res.response_status === true) {
-            fetchCountries().then((countries) => {
-              this.setState({ spinner: false });
-              this.props.navigation.navigate('ComplaintDetailsScreen', {
-                name: languages[language].complaintDetailsScreen.title,
-                data: res.response_datas[0],
-                countries,
-              });
+            this.setState({ spinner: false });
+            this.props.navigation.navigate('ComplaintDetailsScreen', {
+              name: keywords[language].complaint_details_form_title
+                ? keywords[language].complaint_details_form_title
+                : keywords[startUpLanguage].complaint_details_form_title,
+              data: res.response_datas[0],
+              countries,
             });
           } else {
-            console.log()
-            this.setState({ spinner: false });
-            Toast.show(languages[language].errorMessage.notFound, Toast.LONG);
+            Toast.show(
+              keywords[language].notFound
+                ? keywords[language].notFound
+                : keywords[startUpLanguage].notFound,
+              Toast.LONG
+            );
+            setTimeout(() => {
+              this.setState({ spinner: false });
+            }, 1000);
           }
         })
         .catch(() => {
           this.setState({ spinner: false });
-          Toast.show(languages[language].errorMessage.notFound, Toast.LONG);
+          Toast.show(
+            keywords[language].notFound
+              ? keywords[language].notFound
+              : keywords[startUpLanguage].notFound,
+            Toast.LONG
+          );
         });
     }
   };
 
   validateData = () => {
     const { phoneNumber, complaintNo, language } = this.state;
+    const { keywords } = this.props;
 
     let response = true;
     let errorMessage = '';
 
     if (!complaintNo) {
       response = false;
-      errorMessage = languages[language].errorMessage.complaintNo;
+      errorMessage = keywords[language].complaintNo
+        ? keywords[language].complaintNo
+        : keywords[startUpLanguage].complaintNo;
     }
 
     if (!phoneNumber) {
       response = false;
-      errorMessage = languages[language].errorMessage.phoneNumber;
+      errorMessage = keywords[language].phoneNumber
+        ? keywords[language].phoneNumber
+        : keywords[startUpLanguage].phoneNumber;
     } else if (phoneNumber.length < 10 || phoneNumber.length > 10) {
       response = false;
-      errorMessage = languages[language].errorMessage.wrongPhoneNumber;
+      errorMessage = keywords[language].wrongPhoneNumber
+        ? keywords[language].wrongPhoneNumber
+        : keywords[startUpLanguage].wrongPhoneNumber;
     }
 
     const data = {};
@@ -95,6 +115,8 @@ class ComplaintsScreen extends Component {
 
   render() {
     const { phoneNumber, language, complaintNo, spinner } = this.state;
+    const { keywords } = this.props;
+
     return (
       <View style={styles.mainContainer}>
         <ImageBackground
@@ -105,7 +127,11 @@ class ComplaintsScreen extends Component {
             <View style={styles.container}>
               <Spinner
                 visible={this.state.spinner}
-                textContent={'Searching...'}
+                textContent={
+                  keywords[language].searching_label_mobile
+                    ? keywords[language].searching_label_mobile
+                    : keywords[startUpLanguage].searching_label_mobile
+                }
                 textStyle={styles.spinnerTextStyle}
               />
             </View>
@@ -113,21 +139,23 @@ class ComplaintsScreen extends Component {
             <View style={styles.container}>
               <View style={styles.headerContainer}>
                 <Text style={styles.headerTitle}>
-                  {languages[language].complaintsScreen.title}
+                  {keywords[language].follow_complaint
+                    ? keywords[language].follow_complaint
+                    : keywords[startUpLanguage].follow_complaint}
                 </Text>
               </View>
               <View style={styles.txtBoxContainer}>
                 <View style={styles.txtBoxLabelContainer}>
                   <Text style={styles.txtBoxLabel}>
-                    {languages[language].complaintsScreen.phoneTitle}
+                    {keywords[language].phone_form_input_title
+                      ? keywords[language].phone_form_input_title
+                      : keywords[startUpLanguage].phone_form_input_title}
                   </Text>
                 </View>
                 <View style={styles.txtBoxInputContainer}>
                   <TextInput
                     style={styles.txtBoxInput}
-                    placeholder={
-                      languages[language].complaintsScreen.phonePlaceholder
-                    }
+                    placeholder="0700000000"
                     onChangeText={(phoneNumber) =>
                       !isNaN(phoneNumber) && this.setState({ phoneNumber })
                     }
@@ -139,15 +167,15 @@ class ComplaintsScreen extends Component {
               <View style={styles.txtBoxContainer}>
                 <View style={styles.txtBoxLabelContainer}>
                   <Text style={styles.txtBoxLabel}>
-                    {languages[language].complaintsScreen.complaintTitle}
+                    {keywords[language].complain_code_form
+                      ? keywords[language].complain_code_form
+                      : keywords[startUpLanguage].complain_code_form}
                   </Text>
                 </View>
                 <View style={styles.txtBoxInputContainer}>
                   <TextInput
                     style={styles.txtBoxInput}
-                    placeholder={
-                      languages[language].complaintsScreen.complaintPlaceholder
-                    }
+                    placeholder="000000"
                     onChangeText={(complaintNo) =>
                       this.setState({ complaintNo })
                     }
@@ -157,7 +185,11 @@ class ComplaintsScreen extends Component {
               </View>
               <View>
                 <Button
-                  label={languages[language].complaintsScreen.buttonLabel}
+                  label={
+                    keywords[language].complaint_submit
+                      ? keywords[language].complaint_submit
+                      : keywords[startUpLanguage].complaint_submit
+                  }
                   handleClick={this.handleSubmit}
                 />
               </View>
@@ -169,7 +201,14 @@ class ComplaintsScreen extends Component {
   }
 }
 
-export default ComplaintsScreen;
+const mapStateToProps = ({ keywords, countries }) => {
+  return {
+    keywords,
+    countries: Object.values(countries),
+  };
+};
+
+export default connect(mapStateToProps)(ComplaintsScreen);
 
 const styles = StyleSheet.create({
   mainContainer: {
