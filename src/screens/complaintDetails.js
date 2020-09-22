@@ -21,25 +21,26 @@ const ComplaintDetails = (props) => {
   useEffect(() => {
     getLanguage().then((data) => data && setLanguage(data));
 
-    const { countries } = props.route.params;
-    const selCountry = countries.filter(
-      (country) => country.country_code === data.country_id
-    );
-    setCountry(selCountry[0].country_name);
+    // const { countries } = props.route.params;
+    // const selCountry = countries.filter(
+    //   (country) => country.country_code === data.country_id
+    // );
+    // setCountry(selCountry[0].country_name);
   });
 
   const { data } = props.route.params;
   const { keywords } = props;
+  
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.mainContainer}>
         <ImageBackground
           source={require('../../assets/bg_lines.png')}
-          style={{ width, paddingBottom: 50 }}
+          style={{ width, paddingBottom: 50, height }}
         >
           {data && (
             <View style={styles.container}>
-              <View style={styles.detailContainer}>
+              {/* <View style={styles.detailContainer}>
                 <View style={styles.detailTitleContainer}>
                   <Text style={styles.detailTitleLabel}>
                     {keywords[language].complain_code_form
@@ -109,14 +110,13 @@ const ComplaintDetails = (props) => {
                     {data.commodities_names}
                   </Text>
                 </View>
-              </View>
+              </View> */}
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
-                    {keywords[language].message_label_complaint_details
-                      ? keywords[language].message_label_complaint_details
-                      : keywords[startUpLanguage]
-                          .message_label_complaint_details}
+                    {keywords[language].validate_complaint_title
+                      ? keywords[language].validate_complaint_title
+                      : keywords[startUpLanguage].validate_complaint_title}
                   </Text>
                 </View>
                 <View style={styles.detailDescription}>
@@ -125,7 +125,7 @@ const ComplaintDetails = (props) => {
                   </Text>
                 </View>
               </View>
-              <View style={styles.detailContainer}>
+              {/* <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
                   <Text style={styles.detailTitleLabel}>
                     {keywords[language].border_location_label
@@ -150,6 +150,23 @@ const ComplaintDetails = (props) => {
                 <View style={styles.detailDescription}>
                   <Text style={styles.detailDescriptionLabel}>{country}</Text>
                 </View>
+              </View> */}
+
+              <View style={styles.detailContainer}>
+                <View style={styles.detailTitle}>
+                  <Text style={styles.detailTitleLabel}>
+                    {keywords[language].complaint_title_comment
+                      ? keywords[language].complaint_title_comment
+                      : keywords[startUpLanguage].complaint_title_comment}
+                  </Text>
+                </View>
+                {data.comment && (
+                  <View style={styles.detailDescription}>
+                    <Text style={styles.detailDescriptionLabel}>
+                      {data.comment}
+                    </Text>
+                  </View>
+                )}
               </View>
               <View style={styles.detailContainer}>
                 <View style={styles.detailTitle}>
@@ -165,23 +182,20 @@ const ComplaintDetails = (props) => {
                   </Text>
                 </View>
               </View>
-              {data.comment && (
-                <View style={styles.detailContainer}>
-                  <View style={styles.detailTitle}>
-                    <Text style={styles.detailTitleLabel}>
-                      {keywords[language].comment_label_complaint_details
-                        ? keywords[language].comment_label_complaint_details
-                        : keywords[startUpLanguage]
-                            .comment_label_complaint_details}
-                    </Text>
-                  </View>
-                  <View style={styles.detailDescription}>
-                    <Text style={styles.detailDescriptionLabel}>
-                      {data.comment}
-                    </Text>
-                  </View>
+              <View style={styles.detailContainer}>
+                <View style={styles.detailTitle}>
+                  <Text style={styles.detailTitleLabel}>
+                    {keywords[language].notified_label
+                      ? keywords[language].notified_label
+                      : keywords[startUpLanguage].notified_label}
+                  </Text>
                 </View>
-              )}
+                <View style={styles.detailDescription}>
+                  <Text style={styles.detailDescriptionLabel}>
+                    {data.notified_status}
+                  </Text>
+                </View>
+              </View>
             </View>
           )}
         </ImageBackground>

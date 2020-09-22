@@ -56,7 +56,6 @@ class OnBoardingScreen extends Component {
     };
 
     const { keywords } = this.props;
-    // console.log('==========>keywords', keywords);
 
     return (
       <View>

@@ -62,7 +62,9 @@ class LanguageScreen extends Component {
                   initial={0}
                   animation={true}
                   onPress={(value) => this.setState({ language: value })}
-                  style={styles.radionBtn}
+                  style={styles.radioBtn}
+                  buttonColor={yellow}
+                  selectedButtonColor={yellow}
                 />
               </View>
               <Button
