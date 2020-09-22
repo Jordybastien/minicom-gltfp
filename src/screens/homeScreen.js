@@ -62,8 +62,10 @@ const HomeScreen = (props) => {
             <TouchableOpacity
               style={[styles.btn, styles.customizeBtn]}
               onPress={() =>
-                props.navigation.navigate('NewComplaintScreen', {
-                  name: languages[language].newComplaintScreen.title,
+                props.navigation.navigate('FeedBackScreen', {
+                  name: keywords[language].feed_back_label_button
+                    ? keywords[language].feed_back_label_button
+                    : keywords[startUpLanguage].feed_back_label_button,
                 })
               }
             >

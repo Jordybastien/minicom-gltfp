@@ -8,6 +8,7 @@ import SettingsLanguageScreen from '../screens/settingsLanguagesScreen';
 import AboutUsScreen from '../screens/aboutUsScreen';
 import NewComplaintScreen from '../screens/newComplaintScreen';
 import SuccessScreen from '../screens/successScreen';
+import FeedBackScreen from '../screens/feedBackScreen';
 import TabNavigator from './tabNavigator';
 import { blue, white } from '../utils/colors';
 
@@ -52,7 +53,6 @@ const StackConfig = {
         backgroundColor: blue,
       },
       headerTintColor: white,
-      // title: 'Complaint Details',
     },
   },
   SettingsLanguageScreen: {
@@ -95,6 +95,17 @@ const StackConfig = {
     component: SuccessScreen,
     options: { headerShown: false },
   },
+  FeedBackScreen: {
+    name: 'FeedBackScreen',
+    component: FeedBackScreen,
+    options: {
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: blue,
+      },
+      headerTintColor: white,
+    },
+  },
 };
 const Stack = createStackNavigator();
 
@@ -107,6 +118,16 @@ const StackNavigator = () => {
       <Stack.Screen {...StackConfig['OnBoardingScreen']} />
       <Stack.Screen
         {...StackConfig['ComplaintDetailsScreen']}
+        options={({ route }) => ({
+          title: route.params.name,
+          headerStyle: {
+            backgroundColor: blue,
+          },
+          headerTintColor: white,
+        })}
+      />
+      <Stack.Screen
+        {...StackConfig['FeedBackScreen']}
         options={({ route }) => ({
           title: route.params.name,
           headerStyle: {

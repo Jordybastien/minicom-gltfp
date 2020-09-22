@@ -54,7 +54,7 @@ class NewComplaintScreen extends Component {
     email: false,
     emailAddress: '',
     language: startUpLanguage,
-    usedCategories: null,
+    usedCategories: this.props.categories,
     selCategory: '',
     selCountry: '',
     selBuSector: '',
@@ -64,26 +64,26 @@ class NewComplaintScreen extends Component {
     loading: false,
     spinner: false,
     documents: null,
-    countries: null,
+    countries: this.props.countries,
     idNumber: '',
     comNames: '',
   };
 
   componentDidMount() {
     getLanguage().then((data) => data && this.setState({ language: data }));
-    fetchCategories().then((data) =>
-      this.setState({
-        usedCategories: data.map(({ id, complain_name }) => ({
-          label: complain_name,
-          value: id,
-        })),
-      })
-    );
-    fetchCountries().then((countries) =>
-      this.setState({
-        countries,
-      })
-    );
+    // fetchCategories().then((data) =>
+    //   this.setState({
+    //     usedCategories: data.map(({ id, complain_name }) => ({
+    //       label: complain_name,
+    //       value: id,
+    //     })),
+    //   })
+    // );
+    // fetchCountries().then((countries) =>
+    //   this.setState({
+    //     countries,
+    //   })
+    // );
   }
 
   handleSubmit = () => {
@@ -469,7 +469,7 @@ class NewComplaintScreen extends Component {
                               style={{ width: undefined }}
                               selectedValue={selCountry}
                             >
-                              {Platform.OS === 'android' && (
+                              {/* {Platform.OS === 'android' && ( */}
                                 <Picker.Item
                                   label={
                                     keywords[language].choose_country
@@ -478,7 +478,7 @@ class NewComplaintScreen extends Component {
                                   }
                                   value={null}
                                 />
-                              )}
+                              {/* )} */}
                               {countries &&
                                 countries.map(
                                   ({ country_code, country_name }, index) => (
@@ -521,7 +521,7 @@ class NewComplaintScreen extends Component {
                             style={{ width: undefined }}
                             selectedValue={selCategory}
                           >
-                            {Platform.OS === 'android' && (
+                            {/* {Platform.OS === 'android' && ( */}
                               <Picker.Item
                                 label={
                                   languages[language].newComplaintScreen
@@ -529,7 +529,7 @@ class NewComplaintScreen extends Component {
                                 }
                                 value={null}
                               />
-                            )}
+                            {/* )} */}
                             {usedCategories &&
                               usedCategories.map(({ value, label }, index) => (
                                 <Picker.Item
@@ -571,7 +571,7 @@ class NewComplaintScreen extends Component {
                             style={{ width: undefined }}
                             selectedValue={selBuSector}
                           >
-                            {Platform.OS === 'android' && (
+                            {/* {Platform.OS === 'android' && ( */}
                               <Picker.Item
                                 label={
                                   languages[language].newComplaintScreen
@@ -579,7 +579,7 @@ class NewComplaintScreen extends Component {
                                 }
                                 value={null}
                               />
-                            )}
+                            {/* )} */}
                             {businessSectors &&
                               businessSectors.map((item, index) => (
                                 <Picker.Item
@@ -665,7 +665,7 @@ class NewComplaintScreen extends Component {
                             style={{ width: undefined }}
                             selectedValue={selBorderLocation}
                           >
-                            {Platform.OS === 'android' && (
+                            {/* {Platform.OS === 'android' && ( */}
                               <Picker.Item
                                 label={
                                   languages[language].newComplaintScreen
@@ -673,7 +673,7 @@ class NewComplaintScreen extends Component {
                                 }
                                 value={null}
                               />
-                            )}
+                            {/* )} */}
                             {borderLocations &&
                               borderLocations.map((item, index) => (
                                 <Picker.Item
@@ -810,10 +810,16 @@ class NewComplaintScreen extends Component {
   }
 }
 
-const mapStateToProps = ({ categories, keywords }) => {
+const mapStateToProps = ({ categories, keywords, countries }) => {
   return {
-    categories,
+    categories:
+      categories &&
+      Object.values(categories).map(({ id, complain_name }) => ({
+        label: complain_name,
+        value: id,
+      })),
     keywords,
+    countries: Object.values(countries),
   };
 };
 
