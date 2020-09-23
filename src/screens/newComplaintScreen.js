@@ -35,7 +35,10 @@ const genders = [
   { label: 'Male', value: 'male' },
 ];
 
-const businessSectors = ['Medium Scale Trader', 'Small Scale Trader'];
+const businessSectors = [
+  { value: 'Medium Scale Trader', label: 'Medium Scale Trader' },
+  { value: 'Small Scale Trader', label: 'Small Scale Trader' },
+];
 
 const borderLocations = [
   'La corniche Rubavu',
@@ -67,6 +70,7 @@ class NewComplaintScreen extends Component {
     countries: this.props.countries,
     idNumber: '',
     comNames: '',
+    borderLocations: this.props.borderLocations,
   };
 
   componentDidMount() {
@@ -92,13 +96,13 @@ class NewComplaintScreen extends Component {
       this.setState({ spinner: true });
       sendComplaint(data)
         .then((res) => {
-          if (res.response_status) {
+          setTimeout(() => {
             this.setState({ spinner: false });
             this.props.navigation.reset({
               index: 0,
               routes: [{ name: 'SuccessScreen' }],
             });
-          }
+          }, 3000);
         })
         .catch(() => this.setState({ spinner: false }));
     }
@@ -317,6 +321,7 @@ class NewComplaintScreen extends Component {
       selBuSector,
       comNames,
       selBorderLocation,
+      borderLocations: newBorderLocations,
     } = this.state;
 
     const { keywords } = this.props;
@@ -327,6 +332,14 @@ class NewComplaintScreen extends Component {
     genders[1].label = keywords[language].female_gender
       ? keywords[language].female_gender
       : keywords[startUpLanguage].female_gender;
+
+    businessSectors[0].label = keywords[language].business_sector_medium
+      ? keywords[language].business_sector_medium
+      : keywords[startUpLanguage].business_sector_medium;
+
+    businessSectors[1].label = keywords[language].business_sector_small
+      ? keywords[language].business_sector_small
+      : keywords[startUpLanguage].business_sector_small;
 
     return (
       <ScrollView
@@ -470,25 +483,23 @@ class NewComplaintScreen extends Component {
                               selectedValue={selCountry}
                             >
                               {/* {Platform.OS === 'android' && ( */}
-                                <Picker.Item
-                                  label={
-                                    keywords[language].choose_country
-                                      ? keywords[language].choose_country
-                                      : keywords[startUpLanguage].choose_country
-                                  }
-                                  value={null}
-                                />
+                              <Picker.Item
+                                label={
+                                  keywords[language].choose_country
+                                    ? keywords[language].choose_country
+                                    : keywords[startUpLanguage].choose_country
+                                }
+                                value={null}
+                              />
                               {/* )} */}
                               {countries &&
-                                countries.map(
-                                  ({ country_code, country_name }, index) => (
-                                    <Picker.Item
-                                      key={index}
-                                      label={country_name}
-                                      value={country_code}
-                                    />
-                                  )
-                                )}
+                                countries.map(({ id, country_name }, index) => (
+                                  <Picker.Item
+                                    key={index}
+                                    label={country_name}
+                                    value={id}
+                                  />
+                                ))}
                             </Picker>
                           </Item>
                         </View>
@@ -522,13 +533,13 @@ class NewComplaintScreen extends Component {
                             selectedValue={selCategory}
                           >
                             {/* {Platform.OS === 'android' && ( */}
-                              <Picker.Item
-                                label={
-                                  languages[language].newComplaintScreen
-                                    .selectLabel
-                                }
-                                value={null}
-                              />
+                            <Picker.Item
+                              label={
+                                languages[language].newComplaintScreen
+                                  .selectLabel
+                              }
+                              value={null}
+                            />
                             {/* )} */}
                             {usedCategories &&
                               usedCategories.map(({ value, label }, index) => (
@@ -572,20 +583,20 @@ class NewComplaintScreen extends Component {
                             selectedValue={selBuSector}
                           >
                             {/* {Platform.OS === 'android' && ( */}
-                              <Picker.Item
-                                label={
-                                  languages[language].newComplaintScreen
-                                    .selectBuSectorLabel
-                                }
-                                value={null}
-                              />
+                            <Picker.Item
+                              label={
+                                languages[language].newComplaintScreen
+                                  .selectBuSectorLabel
+                              }
+                              value={null}
+                            />
                             {/* )} */}
                             {businessSectors &&
                               businessSectors.map((item, index) => (
                                 <Picker.Item
                                   key={index}
-                                  label={item}
-                                  value={item}
+                                  label={item.label}
+                                  value={item.value}
                                 />
                               ))}
                           </Picker>
@@ -666,20 +677,20 @@ class NewComplaintScreen extends Component {
                             selectedValue={selBorderLocation}
                           >
                             {/* {Platform.OS === 'android' && ( */}
-                              <Picker.Item
-                                label={
-                                  languages[language].newComplaintScreen
-                                    .selectBorderLocationLabel
-                                }
-                                value={null}
-                              />
+                            <Picker.Item
+                              label={
+                                languages[language].newComplaintScreen
+                                  .selectBorderLocationLabel
+                              }
+                              value={null}
+                            />
                             {/* )} */}
-                            {borderLocations &&
-                              borderLocations.map((item, index) => (
+                            {newBorderLocations &&
+                              newBorderLocations.map((item, index) => (
                                 <Picker.Item
                                   key={index}
-                                  label={item}
-                                  value={item}
+                                  label={item.label}
+                                  value={item.value}
                                 />
                               ))}
                           </Picker>
@@ -810,7 +821,12 @@ class NewComplaintScreen extends Component {
   }
 }
 
-const mapStateToProps = ({ categories, keywords, countries }) => {
+const mapStateToProps = ({
+  categories,
+  keywords,
+  countries,
+  borderLocations,
+}) => {
   return {
     categories:
       categories &&
@@ -820,6 +836,12 @@ const mapStateToProps = ({ categories, keywords, countries }) => {
       })),
     keywords,
     countries: Object.values(countries),
+    borderLocations:
+      borderLocations &&
+      Object.values(borderLocations).map(({ id, border_name }) => ({
+        label: border_name,
+        value: id,
+      })),
   };
 };
 

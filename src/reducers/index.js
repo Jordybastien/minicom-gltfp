@@ -5,6 +5,7 @@ import categories from './categories';
 import languages from './languages';
 import keywords from './keywords';
 import countries from './countries';
+import borderLocations from './borderLocations';
 
 export default combineReducers({
   loading,
@@ -13,4 +14,5 @@ export default combineReducers({
   languages,
   keywords,
   countries,
+  borderLocations,
 });

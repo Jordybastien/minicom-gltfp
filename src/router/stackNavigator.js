@@ -10,6 +10,7 @@ import NewComplaintScreen from '../screens/newComplaintScreen';
 import SuccessScreen from '../screens/successScreen';
 import FeedBackScreen from '../screens/feedBackScreen';
 import TabNavigator from './tabNavigator';
+import FeedBackSuccessScreen from '../screens/feedSuccessScreen';
 import { blue, white } from '../utils/colors';
 
 const StackNavigatorConfig = {
@@ -95,6 +96,11 @@ const StackConfig = {
     component: SuccessScreen,
     options: { headerShown: false },
   },
+  FeedBackSuccessScreen: {
+    name: 'FeedBackSuccessScreen',
+    component: FeedBackSuccessScreen,
+    options: { headerShown: false },
+  },
   FeedBackScreen: {
     name: 'FeedBackScreen',
     component: FeedBackScreen,
@@ -167,6 +173,7 @@ const StackNavigator = () => {
         })}
       />
       <Stack.Screen {...StackConfig['SuccessScreen']} />
+      <Stack.Screen {...StackConfig['FeedBackSuccessScreen']} />
     </Stack.Navigator>
   );
 };

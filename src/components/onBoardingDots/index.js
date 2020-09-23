@@ -1,8 +1,17 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { blue } from '../../utils/colors';
+import { blue, white } from '../../utils/colors';
 
-const Dots = ({ count, handleClickZ, handleClickO, handleClickT }) => {
+const Dots = ({
+  count,
+  handleClickZ,
+  handleClickO,
+  handleClickT,
+  handleClickTh,
+  handleClickF,
+  handleClickFi,
+  handleClickS,
+}) => {
   return (
     <View style={styles.dotsContainer}>
       {count === 0 && (
@@ -18,6 +27,22 @@ const Dots = ({ count, handleClickZ, handleClickO, handleClickT }) => {
           <TouchableOpacity
             style={[styles.dot, styles.halfOpacity]}
             onPress={handleClickT}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickTh}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickF}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickFi}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickS}
           />
         </>
       )}
@@ -35,6 +60,22 @@ const Dots = ({ count, handleClickZ, handleClickO, handleClickT }) => {
             style={[styles.dot, styles.halfOpacity]}
             onPress={handleClickT}
           />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickTh}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickF}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickFi}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickS}
+          />
         </>
       )}
       {count === 2 && (
@@ -51,6 +92,150 @@ const Dots = ({ count, handleClickZ, handleClickO, handleClickT }) => {
             style={[styles.dot, styles.fullOpacity]}
             onPress={handleClickT}
           />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickTh}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickF}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickFi}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickS}
+          />
+        </>
+      )}
+      {count === 3 && (
+        <>
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickZ}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickO}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickT}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.fullOpacity]}
+            onPress={handleClickTh}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickF}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickFi}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickS}
+          />
+        </>
+      )}
+      {count === 4 && (
+        <>
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickZ}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickO}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickT}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickTh}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.fullOpacity]}
+            onPress={handleClickF}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickFi}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickS}
+          />
+        </>
+      )}
+      {count === 5 && (
+        <>
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickZ}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickO}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickT}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickTh}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickF}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.fullOpacity]}
+            onPress={handleClickFi}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickS}
+          />
+        </>
+      )}
+      {count === 6 && (
+        <>
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickZ}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickO}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickT}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickTh}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickF}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.halfOpacity]}
+            onPress={handleClickFi}
+          />
+          <TouchableOpacity
+            style={[styles.dot, styles.fullOpacity]}
+            onPress={handleClickS}
+          />
         </>
       )}
     </View>
@@ -65,10 +250,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginLeft: 30,
+    marginRight: 15,
   },
   dot: {
-    backgroundColor: blue,
+    backgroundColor: white,
     borderRadius: 50,
     width: 10,
     height: 10,

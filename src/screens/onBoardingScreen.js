@@ -11,7 +11,7 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { getLanguage, changeOnboardingStatus } from '../utils/storage';
 import { languages, startUpLanguage } from '../utils/language';
-import HeaderLogo from '../components/headerLogo';
+import HeaderLogo from '../components/headerLogo/custom';
 import { blue, white, yellow } from '../utils/colors';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Dots from '../components/onBoardingDots';
@@ -36,7 +36,7 @@ class OnBoardingScreen extends Component {
 
   handleNext = () => {
     const { count } = this.state;
-    if (count < 2) {
+    if (count < 6) {
       this.setState({ count: count + 1 });
     } else {
       changeOnboardingStatus(true);
@@ -67,7 +67,7 @@ class OnBoardingScreen extends Component {
             onSwipeLeft={this.handlePrevious}
             onSwipeRight={this.handleNext}
             config={config}
-            style={{ flex: 1 }}
+            style={{ flex: 1, backgroundColor: blue }}
           >
             <View style={styles.mainContainer}>
               <HeaderLogo />
@@ -77,57 +77,174 @@ class OnBoardingScreen extends Component {
                 </View>
                 <View style={styles.descriptionContainer}>
                   {count === 0 && (
-                    <Animatable.Text
-                      style={styles.description}
+                    <Animatable.View
+                      style={{ marginBottom: 30, marginTop: 20 }}
                       animation="fadeInLeft"
                     >
-                      {keywords[language].mobile_slider_one
-                        ? keywords[language].mobile_slider_one
-                        : keywords[startUpLanguage].mobile_slider_one}
-                    </Animatable.Text>
+                      <Text style={styles.onBoardingTitle}>
+                        {keywords[language].rra_slider_title
+                          ? keywords[language].rra_slider_title
+                          : keywords[startUpLanguage].rra_slider_title}
+                      </Text>
+                    </Animatable.View>
                   )}
                   {count === 1 && (
-                    <Animatable.Text
-                      style={styles.description}
+                    <Animatable.View
+                      style={{ marginBottom: 30, marginTop: 20 }}
                       animation="fadeInLeft"
                     >
-                      {keywords[language].mobile_slider_two
-                        ? keywords[language].mobile_slider_two
-                        : keywords[startUpLanguage].mobile_slider_two}
-                    </Animatable.Text>
+                      <Text style={styles.onBoardingTitle}>
+                        {keywords[language].rnp_title
+                          ? keywords[language].rnp_title
+                          : keywords[startUpLanguage].rnp_title}
+                      </Text>
+                    </Animatable.View>
                   )}
                   {count === 2 && (
-                    <Animatable.Text
-                      style={styles.description}
+                    <Animatable.View
+                      style={{ marginBottom: 30, marginTop: 20 }}
                       animation="fadeInLeft"
                     >
-                      {keywords[language].mobile_slider_three
-                        ? keywords[language].mobile_slider_three
-                        : keywords[startUpLanguage].mobile_slider_three}
-                    </Animatable.Text>
+                      <Text style={styles.onBoardingTitle}>
+                        {keywords[language].rsb_title
+                          ? keywords[language].rsb_title
+                          : keywords[startUpLanguage].rsb_title}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 3 && (
+                    <Animatable.View
+                      style={{ marginBottom: 30, marginTop: 20 }}
+                      animation="fadeInLeft"
+                    >
+                      <Text style={styles.onBoardingTitle}>
+                        {keywords[language].fda_title
+                          ? keywords[language].fda_title
+                          : keywords[startUpLanguage].fda_title}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 4 && (
+                    <Animatable.View
+                      style={{ marginBottom: 30, marginTop: 20 }}
+                      animation="fadeInLeft"
+                    >
+                      <Text style={styles.onBoardingTitle}>
+                        {keywords[language].rica_title
+                          ? keywords[language].rica_title
+                          : keywords[startUpLanguage].rica_title}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 5 && (
+                    <Animatable.View
+                      style={{ marginBottom: 30, marginTop: 20 }}
+                      animation="fadeInLeft"
+                    >
+                      <Text style={styles.onBoardingTitle}>
+                        {keywords[language].dgi_title
+                          ? keywords[language].dgi_title
+                          : keywords[startUpLanguage].dgi_title}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 6 && (
+                    <Animatable.View
+                      style={{ marginBottom: 30, marginTop: 20 }}
+                      animation="fadeInLeft"
+                    >
+                      <Text style={styles.onBoardingTitle}>
+                        {keywords[language].minicom_title
+                          ? keywords[language].minicom_title
+                          : keywords[startUpLanguage].minicom_title}
+                      </Text>
+                    </Animatable.View>
                   )}
                 </View>
                 <View>
                   {count === 0 && (
-                    <Animatable.Image
-                      source={require('../../assets/img-1.png')}
-                      style={styles.onboardingImage}
+                    <Animatable.View
                       animation="fadeInUp"
-                    />
+                      style={{ height: 230 }}
+                    >
+                      <Text style={styles.onBoardingBody}>
+                        {keywords[language].rra_paragraph
+                          ? keywords[language].rra_paragraph
+                          : keywords[startUpLanguage].rra_paragraph}
+                      </Text>
+                    </Animatable.View>
                   )}
                   {count === 1 && (
-                    <Animatable.Image
-                      source={require('../../assets/img-2.png')}
-                      style={styles.onboardingImage}
+                    <Animatable.View
                       animation="fadeInUp"
-                    />
+                      style={{ height: 230 }}
+                    >
+                      <Text style={styles.onBoardingBody}>
+                        {keywords[language].rnp_paragraph
+                          ? keywords[language].rnp_paragraph
+                          : keywords[startUpLanguage].rnp_paragraph}
+                      </Text>
+                    </Animatable.View>
                   )}
                   {count === 2 && (
-                    <Animatable.Image
-                      source={require('../../assets/img-3.png')}
-                      style={styles.onboardingImage}
+                    <Animatable.View
                       animation="fadeInUp"
-                    />
+                      style={{ height: 230 }}
+                    >
+                      <Text style={styles.onBoardingBody}>
+                        {keywords[language].rsb_paragraph
+                          ? keywords[language].rsb_paragraph
+                          : keywords[startUpLanguage].rsb_paragraph}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 3 && (
+                    <Animatable.View
+                      animation="fadeInUp"
+                      style={{ height: 230 }}
+                    >
+                      <Text style={styles.onBoardingBody}>
+                        {keywords[language].fda_paragraph
+                          ? keywords[language].fda_paragraph
+                          : keywords[startUpLanguage].fda_paragraph}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 4 && (
+                    <Animatable.View
+                      animation="fadeInUp"
+                      style={{ height: 230 }}
+                    >
+                      <Text style={styles.onBoardingBody}>
+                        {keywords[language].rica_paragraph
+                          ? keywords[language].rica_paragraph
+                          : keywords[startUpLanguage].rica_paragraph}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 5 && (
+                    <Animatable.View
+                      animation="fadeInUp"
+                      style={{ height: 230 }}
+                    >
+                      <Text style={styles.onBoardingBody}>
+                        {keywords[language].dgi_paragraph
+                          ? keywords[language].dgi_paragraph
+                          : keywords[startUpLanguage].dgi_paragraph}
+                      </Text>
+                    </Animatable.View>
+                  )}
+                  {count === 6 && (
+                    <Animatable.View
+                      animation="fadeInUp"
+                      style={{ height: 230 }}
+                    >
+                      <Text style={styles.onBoardingBody}>
+                        {keywords[language].minicom_paragraph
+                          ? keywords[language].minicom_paragraph
+                          : keywords[startUpLanguage].minicom_paragraph}
+                      </Text>
+                    </Animatable.View>
                   )}
                 </View>
                 <View style={styles.viewHandler}>
@@ -148,9 +265,13 @@ class OnBoardingScreen extends Component {
                     handleClickZ={() => this.setState({ count: 0 })}
                     handleClickO={() => this.setState({ count: 1 })}
                     handleClickT={() => this.setState({ count: 2 })}
+                    handleClickTh={() => this.setState({ count: 3 })}
+                    handleClickF={() => this.setState({ count: 4 })}
+                    handleClickFi={() => this.setState({ count: 5 })}
+                    handleClickS={() => this.setState({ count: 6 })}
                   />
                   <View style={styles.nextBtnContainer}>
-                    {count !== 2 ? (
+                    {count !== 6 ? (
                       <>
                         <TouchableOpacity onPress={this.handleNext}>
                           <Text style={styles.btnLabels}>
@@ -168,7 +289,7 @@ class OnBoardingScreen extends Component {
                             <AntDesign
                               name="caretright"
                               size={20}
-                              color={white}
+                              color={blue}
                             />
                           </TouchableOpacity>
                         </View>
@@ -244,7 +365,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   circleBtn: {
-    backgroundColor: yellow,
+    backgroundColor: white,
     borderRadius: 50,
     width: 50,
     justifyContent: 'center',
@@ -259,7 +380,7 @@ const styles = StyleSheet.create({
   },
 
   mainTitle: {
-    color: blue,
+    color: white,
     fontFamily: 'bold',
     fontSize: 40,
   },
@@ -273,15 +394,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   descriptionContainer: {
-    paddingRight: 50,
-    paddingLeft: 50,
+    paddingRight: 30,
+    paddingLeft: 30,
   },
   btnLabels: {
     fontFamily: 'regular',
-    color: blue,
+    color: white,
   },
   getStartedBtn: {
-    backgroundColor: blue,
+    backgroundColor: white,
     width: 150,
     height: 60,
     justifyContent: 'center',
@@ -298,8 +419,20 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   getStartedLabel: {
-    color: white,
+    color: blue,
     fontFamily: 'bold',
     fontSize: 16,
+  },
+  onBoardingTitle: {
+    color: white,
+    fontFamily: 'bold',
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  onBoardingBody: {
+    color: white,
+    fontFamily: 'regular',
+    textAlign: 'center',
+    fontSize: 15,
   },
 });

@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
-const SuccessScreen = (props) => {
+const FeedBackSuccessScreen = (props) => {
   const [language, setLanguage] = useState(startUpLanguage);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const SuccessScreen = (props) => {
   });
 
   const { keywords } = props;
-  
+
   return (
     <View>
       <ImageBackground
@@ -37,16 +37,16 @@ const SuccessScreen = (props) => {
             <AntDesign name="checkcircle" size={200} color={blue} />
             <View style={styles.textContainer}>
               <Text style={styles.headerText}>
-                {keywords[language].thanks_label
-                  ? keywords[language].thanks_label
-                  : keywords[startUpLanguage].thanks_label}
+                {keywords[language].feedback_success_title
+                  ? keywords[language].feedback_success_title
+                  : keywords[startUpLanguage].feedback_success_title}
               </Text>
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.text}>
-                {keywords[language].feedback_label
-                  ? keywords[language].feedback_label
-                  : keywords[startUpLanguage].feedback_label}
+                {keywords[language].feedback_success_body
+                  ? keywords[language].feedback_success_body
+                  : keywords[startUpLanguage].feedback_success_body}
               </Text>
             </View>
             <Button
@@ -75,7 +75,7 @@ const mapStateToProps = ({ keywords }) => {
   };
 };
 
-export default connect(mapStateToProps)(SuccessScreen);
+export default connect(mapStateToProps)(FeedBackSuccessScreen);
 
 const styles = StyleSheet.create({
   mainContainer: {
