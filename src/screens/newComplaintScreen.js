@@ -10,6 +10,7 @@ import {
   Platform,
   TouchableOpacity,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import { blue, lowGray, white, gray, yellow } from '../utils/colors';
 import RadioForm from 'react-native-simple-radio-button';
@@ -27,6 +28,8 @@ import { sendComplaint } from '../services/complaint';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as AndroidDocumentPicker from 'expo-document-picker';
 import { fetchCountries } from '../services/countries';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 
 const { width, height } = Dimensions.get('window');
 
@@ -40,11 +43,9 @@ const businessSectors = [
   { value: 'Small Scale Trader', label: 'Small Scale Trader' },
 ];
 
-const borderLocations = [
-  'La corniche Rubavu',
-  'Petite Barriere',
-  'Rusizi',
-  'Bugarama',
+const answers = [
+  { label: 'Yes', value: true },
+  { label: 'No', value: false },
 ];
 
 class NewComplaintScreen extends Component {
@@ -71,6 +72,8 @@ class NewComplaintScreen extends Component {
     idNumber: '',
     comNames: '',
     borderLocations: this.props.borderLocations,
+    isUpload: null,
+    newSelectedItems: [],
   };
 
   componentDidMount() {
@@ -92,9 +95,10 @@ class NewComplaintScreen extends Component {
 
   handleSubmit = () => {
     const { response, data } = this.validateData();
+    const { isUpload } = this.state;
     if (response) {
       this.setState({ spinner: true });
-      sendComplaint(data)
+      sendComplaint(data, isUpload)
         .then((res) => {
           setTimeout(() => {
             this.setState({ spinner: false });
@@ -124,12 +128,30 @@ class NewComplaintScreen extends Component {
       selBuSector,
       comNames,
       selBorderLocation,
+      isUpload,
     } = this.state;
     const { keywords } = this.props;
 
     let response = true;
     let errorMessage = '';
 
+    if (typeof isUpload === 'object') {
+      response = false;
+      errorMessage = keywords[language].is_upload_choice
+        ? keywords[language].is_upload_choice
+        : keywords[startUpLanguage].is_upload_choice;
+    } else if (
+      (typeof isUpload === 'boolean' && isUpload && !documents) ||
+      (typeof isUpload === 'boolean' &&
+        isUpload &&
+        documents &&
+        documents.length === 0)
+    ) {
+      response = false;
+      errorMessage = keywords[language].is_upload_choice_not_uploaded
+        ? keywords[language].is_upload_choice_not_uploaded
+        : keywords[startUpLanguage].is_upload_choice_not_uploaded;
+    }
     if (!sms && !email) {
       response = false;
       errorMessage = keywords[language].notification
@@ -203,11 +225,12 @@ class NewComplaintScreen extends Component {
       errorMessage = keywords[language].idNumber
         ? keywords[language].idNumber
         : keywords[startUpLanguage].idNumber;
+    } else if (idNumber.length < 16 || idNumber.length > 16) {
+      response = false;
+      errorMessage = keywords[language].wrongIdNumberMessage
+        ? keywords[language].wrongIdNumberMessage
+        : keywords[startUpLanguage].wrongIdNumberMessage;
     }
-    // else if (idNumber.length < 16 || idNumber.length > 16) {
-    //   response = false;
-    //   errorMessage = languages[language].errorMessage.wrongIdNumber;
-    // }
 
     if (!phoneNumber) {
       response = false;
@@ -275,9 +298,10 @@ class NewComplaintScreen extends Component {
           copyToCacheDirectory: true,
           multiple: true,
         });
-        results.type = 'application/pdf';
 
-        arr.push(results);
+        const resType = results.type;
+        results.type = 'application/pdf';
+        resType === 'success' && arr.push(results);
       }
       const { documents } = this.state;
       this.setState({
@@ -294,7 +318,8 @@ class NewComplaintScreen extends Component {
 
   handleCategory = (data) => this.setState({ selCategory: data });
 
-  handleCountry = (data) => this.setState({ selCountry: data });
+  handleCountry = (country) =>
+    this.setState({ newSelectedItems: country, selCountry: country[0] });
 
   handleBuSector = (data) => this.setState({ selBuSector: data });
 
@@ -321,10 +346,11 @@ class NewComplaintScreen extends Component {
       selBuSector,
       comNames,
       selBorderLocation,
+      isUpload,
       borderLocations: newBorderLocations,
     } = this.state;
 
-    const { keywords } = this.props;
+    const { keywords, newCountries } = this.props;
 
     genders[0].label = keywords[language].gender_male
       ? keywords[language].gender_male
@@ -408,7 +434,7 @@ class NewComplaintScreen extends Component {
                             !isNaN(idNumber) && this.setState({ idNumber })
                           }
                           value={idNumber}
-                          // maxLength={16}
+                          maxLength={16}
                         />
                       </View>
                     </View>
@@ -464,7 +490,7 @@ class NewComplaintScreen extends Component {
                           </Text>
                         </View>
                         <View style={{ flex: 1 }}>
-                          <Item
+                          {/* <Item
                             picker
                             style={[styles.txtBox, { marginBottom: 0 }]}
                           >
@@ -481,18 +507,18 @@ class NewComplaintScreen extends Component {
                               }
                               style={{ width: undefined }}
                               selectedValue={selCountry}
-                            >
-                              {/* {Platform.OS === 'android' && ( */}
-                              <Picker.Item
+                            > */}
+                          {/* {Platform.OS === 'android' && ( */}
+                          {/* <Picker.Item
                                 label={
                                   keywords[language].choose_country
                                     ? keywords[language].choose_country
                                     : keywords[startUpLanguage].choose_country
                                 }
                                 value={null}
-                              />
-                              {/* )} */}
-                              {countries &&
+                              /> */}
+                          {/* )} */}
+                          {/* {countries &&
                                 countries.map(({ id, country_name }, index) => (
                                   <Picker.Item
                                     key={index}
@@ -501,7 +527,51 @@ class NewComplaintScreen extends Component {
                                   />
                                 ))}
                             </Picker>
-                          </Item>
+                          </Item> */}
+                          {/* <SearchableDropdown
+                            items={newCountries}
+                            onItemSelect={this.handleCountry}
+                            itemStyle={{
+                              padding: 10,
+                              marginTop: 2,
+                              backgroundColor: '#ddd',
+                              borderColor: '#bbb',
+                              borderWidth: 1,
+                              borderRadius: 5,
+                            }}
+                            itemTextStyle={{ color: '#222' }}
+                            itemsContainerStyle={{ maxHeight: 140 }}
+                            textInputProps={{
+                              placeholder: keywords[language].choose_country
+                                ? keywords[language].choose_country
+                                : keywords[startUpLanguage].choose_country,
+                              underlineColorAndroid: 'transparent',
+                              style: styles.txtBox,
+                            }}
+                            listProps={{
+                              nestedScrollEnabled: true,
+                            }}
+                          /> */}
+                          <View style={[styles.txtBox, { marginBottom: 0 }]}>
+                            <SectionedMultiSelect
+                              items={newCountries}
+                              uniqueKey="id"
+                              selectText={
+                                keywords[language].choose_country
+                                  ? keywords[language].choose_country
+                                  : keywords[startUpLanguage].choose_country
+                              }
+                              showDropDowns={true}
+                              readOnlyHeadings={false}
+                              onSelectedItemsChange={this.handleCountry}
+                              selectedItems={this.state.newSelectedItems}
+                              single={true}
+                              hideConfirm={true}
+                              modalWithSafeAreaView={true}
+                              itemFontFamily="regular"
+                              showCancelButton={true}
+                            />
+                          </View>
                         </View>
                       </View>
                     )}
@@ -785,16 +855,49 @@ class NewComplaintScreen extends Component {
                           </View>
                         )}
                       </View>
-                      <View style={styles.uploadContainer}>
-                        <TouchableOpacity
-                          style={styles.btn}
-                          onPress={this.handleUpload}
-                        >
-                          <Text style={styles.btnLabel}>
-                            {languages[language].newComplaintScreen.uploadBtn}
-                          </Text>
-                        </TouchableOpacity>
+                      <View
+                        style={[
+                          styles.notificationsContainer,
+                          Platform.OS === 'android' && {
+                            flex: 1,
+                            marginBottom: 40,
+                          },
+                        ]}
+                      >
+                        <CheckBox
+                          title={
+                            keywords[language].is_upload_yes
+                              ? keywords[language].is_upload_yes
+                              : keywords[startUpLanguage].is_upload_yes
+                          }
+                          checked={isUpload === true}
+                          onPress={() => this.setState({ isUpload: true })}
+                          containerStyle={styles.singleCheck}
+                        />
+
+                        <CheckBox
+                          title={
+                            keywords[language].is_upload_no
+                              ? keywords[language].is_upload_no
+                              : keywords[startUpLanguage].is_upload_no
+                          }
+                          checked={isUpload === false}
+                          onPress={() => this.setState({ isUpload: false })}
+                          containerStyle={styles.singleCheck}
+                        />
                       </View>
+                      {isUpload && (
+                        <View style={styles.uploadContainer}>
+                          <TouchableOpacity
+                            style={styles.btn}
+                            onPress={this.handleUpload}
+                          >
+                            <Text style={styles.btnLabel}>
+                              {languages[language].newComplaintScreen.uploadBtn}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      )}
                     </View>
                     <View style={styles.androidResp}>
                       <Button
@@ -841,6 +944,12 @@ const mapStateToProps = ({
       Object.values(borderLocations).map(({ id, border_name }) => ({
         label: border_name,
         value: id,
+      })),
+    newCountries:
+      countries &&
+      Object.values(countries).map(({ id, country_name }) => ({
+        name: country_name,
+        id,
       })),
   };
 };

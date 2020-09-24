@@ -165,7 +165,7 @@ class OnBoardingScreen extends Component {
                   {count === 0 && (
                     <Animatable.View
                       animation="fadeInUp"
-                      style={{ height: 230 }}
+                      style={styles.singleParagraph}
                     >
                       <Text style={styles.onBoardingBody}>
                         {keywords[language].rra_paragraph
@@ -177,7 +177,7 @@ class OnBoardingScreen extends Component {
                   {count === 1 && (
                     <Animatable.View
                       animation="fadeInUp"
-                      style={{ height: 230 }}
+                      style={styles.singleParagraph}
                     >
                       <Text style={styles.onBoardingBody}>
                         {keywords[language].rnp_paragraph
@@ -189,7 +189,7 @@ class OnBoardingScreen extends Component {
                   {count === 2 && (
                     <Animatable.View
                       animation="fadeInUp"
-                      style={{ height: 230 }}
+                      style={styles.singleParagraph}
                     >
                       <Text style={styles.onBoardingBody}>
                         {keywords[language].rsb_paragraph
@@ -201,7 +201,7 @@ class OnBoardingScreen extends Component {
                   {count === 3 && (
                     <Animatable.View
                       animation="fadeInUp"
-                      style={{ height: 230 }}
+                      style={styles.singleParagraph}
                     >
                       <Text style={styles.onBoardingBody}>
                         {keywords[language].fda_paragraph
@@ -213,7 +213,7 @@ class OnBoardingScreen extends Component {
                   {count === 4 && (
                     <Animatable.View
                       animation="fadeInUp"
-                      style={{ height: 230 }}
+                      style={styles.singleParagraph}
                     >
                       <Text style={styles.onBoardingBody}>
                         {keywords[language].rica_paragraph
@@ -225,7 +225,7 @@ class OnBoardingScreen extends Component {
                   {count === 5 && (
                     <Animatable.View
                       animation="fadeInUp"
-                      style={{ height: 230 }}
+                      style={styles.singleParagraph}
                     >
                       <Text style={styles.onBoardingBody}>
                         {keywords[language].dgi_paragraph
@@ -237,7 +237,7 @@ class OnBoardingScreen extends Component {
                   {count === 6 && (
                     <Animatable.View
                       animation="fadeInUp"
-                      style={{ height: 230 }}
+                      style={styles.singleParagraph}
                     >
                       <Text style={styles.onBoardingBody}>
                         {keywords[language].minicom_paragraph
@@ -396,6 +396,8 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     paddingRight: 30,
     paddingLeft: 30,
+    justifyContent: 'center',
+    marginTop: 30,
   },
   btnLabels: {
     fontFamily: 'regular',
@@ -434,5 +436,9 @@ const styles = StyleSheet.create({
     fontFamily: 'regular',
     textAlign: 'center',
     fontSize: 15,
+  },
+  singleParagraph: {
+    height: 230,
+    // justifyContent: 'center',
   },
 });

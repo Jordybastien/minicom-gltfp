@@ -1,23 +1,28 @@
 import api from './api';
 
-export const sendComplaint = async (complaint) => {
+export const sendComplaint = async (complaint, isUpload) => {
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
 
   const raw = JSON.stringify(complaint);
 
-  const requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow',
-  };
+  const requestOptions = isUpload
+    ? {
+        method: 'POST',
+        body: complaint,
+        redirect: 'follow',
+      }
+    : {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
 
   fetch(
     'http://46.101.182.152:9001/api/auth/MobileSubmitComplain',
     requestOptions
   )
-    .then((response) => response.text())
     .then((result) => {
       return result;
     })
