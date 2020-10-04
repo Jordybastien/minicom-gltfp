@@ -31,7 +31,7 @@ const StackConfig = {
         backgroundColor: blue,
       },
       headerTintColor: white,
-      title: 'Minicom-GLTFP',
+      title: 'Minicom-CBTC',
       headerLeft: null,
     },
   },

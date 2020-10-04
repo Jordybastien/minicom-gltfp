@@ -20,7 +20,7 @@ export const sendComplaint = async (complaint, isUpload) => {
       };
 
   fetch(
-    'http://46.101.182.152:9001/api/auth/MobileSubmitComplain',
+    'http://197.243.20.94:13000/api/auth/MobileSubmitComplain',
     requestOptions
   )
     .then((result) => {
