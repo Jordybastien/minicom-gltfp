@@ -20,7 +20,7 @@ export const sendComplaint = async (complaint, isUpload) => {
       };
 
   fetch(
-    'http://197.243.20.94:13000/api/auth/MobileSubmitComplain',
+    'https://cbtcomplaints.minicom.gov.rw/api/auth/MobileSubmitComplain',
     requestOptions
   )
     .then((result) => {

@@ -7,11 +7,13 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "sdkVersion": "38.0.0",
+    "icon": "https://res.cloudinary.com/dodfpnbik/image/upload/v1601986705/minicom_icon_ojrev2.png",
     "ios": {
       "bundleIdentifier": "org.minicomgltfp.exp"
     },
     "android": {
-      "package": "org.minicomgltfp.exp"
+      "package": "org.minicomgltfp.exp",
+      "versionCode": 3
     }
   }
 }

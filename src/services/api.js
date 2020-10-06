@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'http://197.243.20.94:13000/api/';
+export const baseURL = 'https://cbtcomplaints.minicom.gov.rw/api/';
 
 const apiCall = axios.create({
   baseURL,
