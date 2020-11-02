@@ -13,7 +13,7 @@
     },
     "android": {
       "package": "org.minicomgltfp.exp",
-      "versionCode": 3
+      "versionCode": 4
     }
   }
 }

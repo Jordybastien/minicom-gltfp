@@ -6,8 +6,9 @@ import {
   Dimensions,
   TouchableOpacity,
   ImageBackground,
+  Linking,
 } from 'react-native';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { blue, white } from '../utils/colors';
 import { getLanguage } from '../utils/storage';
 import { languages, startUpLanguage } from '../utils/language';
@@ -22,6 +23,16 @@ const HomeScreen = (props) => {
     getLanguage().then((data) => data && setLanguage(data));
   });
   const { keywords } = props;
+
+  const handleClick = () => {
+    Linking.canOpenURL('https://cbtcomplaints.minicom.gov.rw/login').then((supported) => {
+      if (supported) {
+        Linking.openURL('https://cbtcomplaints.minicom.gov.rw/login');
+      } else {
+        console.log("Don't know how to open URI: " + this.props.url);
+      }
+    });
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -77,6 +88,19 @@ const HomeScreen = (props) => {
               <MaterialIcons name="feedback" size={24} color={blue} />
             </TouchableOpacity>
           </View>
+          <View style={styles.loginBtnContainer}>
+            <TouchableOpacity
+              style={[styles.btn, { marginRight: 5 }]}
+              onPress={handleClick}
+            >
+              <Text style={styles.btnLabel}>
+                {keywords[language].login_menu
+                  ? keywords[language].login_menu
+                  : keywords[startUpLanguage].login_menu}
+              </Text>
+              <AntDesign name="login" size={30} color={white} />
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
     </View>
@@ -114,6 +138,7 @@ const styles = StyleSheet.create({
     width: width - 50,
     flexDirection: 'row',
   },
+
   btn: {
     backgroundColor: blue,
     borderRadius: 30,
@@ -146,5 +171,9 @@ const styles = StyleSheet.create({
   },
   customizeBtnLabel: {
     color: blue,
+  },
+  loginBtnContainer: {
+    width: width - 50,
+    flexDirection: 'row',
   },
 });
