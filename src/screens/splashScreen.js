@@ -81,7 +81,7 @@ const SplashScreen = (props) => {
                 },
               ]}
             >
-              GLTFP
+              CBTC
             </Text>
           </View>
           <Image

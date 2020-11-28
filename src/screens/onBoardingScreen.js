@@ -73,7 +73,7 @@ class OnBoardingScreen extends Component {
               <HeaderLogo />
               <View style={styles.container}>
                 <View style={styles.mainTitleContainer}>
-                  <Text style={styles.mainTitle}>GLFTP</Text>
+                  <Text style={styles.mainTitle}>CBTC</Text>
                 </View>
                 <View style={styles.descriptionContainer}>
                   {count === 0 && (
