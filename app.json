@@ -7,13 +7,13 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "sdkVersion": "38.0.0",
-    "icon": "https://res.cloudinary.com/dodfpnbik/image/upload/v1601986705/minicom_icon_ojrev2.png",
+    "icon": "https://res.cloudinary.com/dodfpnbik/image/upload/v1632809199/playstore_fphliw.png",
     "ios": {
       "bundleIdentifier": "org.minicomcbtc.exp"
     },
     "android": {
       "package": "org.minicomcbtc.exp",
-      "versionCode": 6
+      "versionCode": 7
     }
   }
 }
